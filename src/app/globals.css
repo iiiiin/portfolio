@@ -1,26 +1,228 @@
 @import "tailwindcss";
 
+/* ============================================
+   루트 CSS 변수 정의
+   - 라이트/다크 모드 지원
+   ============================================ */
 :root {
+  /* 라이트 모드 (기본) */
   --background: #ffffff;
-  --foreground: #171717;
+  --background-secondary: #f8f9fc;
+  --background-card: #ffffff;
+
+  --foreground: #1a1a2e;
+  --foreground-secondary: #4a4a68;
+  --foreground-muted: #8888a4;
+
+  /* 강조 색상 (라이트) */
+  --accent-primary: #6366f1;
+  --accent-secondary: #8b5cf6;
+  --accent-tertiary: #a855f7;
+
+  /* 타입별 색상 */
+  --color-education: #22c55e;
+  --color-project: #3b82f6;
+  --color-work: #f59e0b;
+
+  /* 경로 색상 */
+  --path-stroke: #6366f1;
+  --path-glow: rgba(99, 102, 241, 0.3);
+
+  /* 테두리 */
+  --border-color: #e5e7eb;
+  --border-color-hover: #d1d5db;
+
+  /* 그림자 */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
 }
 
+/* 다크 모드 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0f;
+    --background-secondary: #12121a;
+    --background-card: #1a1a24;
+
+    --foreground: #f5f5f7;
+    --foreground-secondary: #a1a1aa;
+    --foreground-muted: #71717a;
+
+    /* 강조 색상 (다크 - 톤 조정) */
+    --accent-primary: #818cf8;
+    --accent-secondary: #a78bfa;
+    --accent-tertiary: #c084fc;
+
+    /* 테두리 */
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-color-hover: rgba(255, 255, 255, 0.2);
+
+    /* 그림자 (다크모드) */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Tailwind 테마 확장 */
 @theme inline {
   --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-card: var(--background-card);
   --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-tertiary: var(--accent-tertiary);
+  --color-border: var(--border-color);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================
+   글로벌 스타일
+   ============================================ */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================
+   Hero 배경 글로우
+   ============================================ */
+.hero-glow {
+  position: absolute;
+  inset: -20% -10%;
+  background:
+    radial-gradient(600px 380px at 50% 35%, rgba(124, 101, 255, 0.18), transparent 65%),
+    radial-gradient(420px 300px at 50% 70%, rgba(176, 129, 255, 0.15), transparent 70%),
+    radial-gradient(900px 600px at 50% 50%, rgba(99, 102, 241, 0.08), transparent 75%);
+  pointer-events: none;
+}
+
+/* ============================================
+   스크롤바 커스텀 스타일
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}
+
+/* ============================================
+   카드 스타일
+   ============================================ */
+.card {
+  background: var(--background-card);
+  border: 1px solid var(--border-color);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.35));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+}
+
+/* 섹션 카드 높이 통일 */
+.section-card {
+  min-height: 520px;
+}
+
+@media (max-width: 768px) {
+  .section-card {
+    min-height: auto;
+  }
+}
+
+/* ============================================
+   그라디언트 텍스트
+   ============================================ */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-tertiary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   스킬 로고 그리드
+   ============================================ */
+.skill-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+  padding: 8px;
+  transition: transform 0.2s ease;
+}
+
+.skill-logo:hover {
+  transform: scale(1.1);
+}
+
+/* ============================================
+   캐러셀 스타일
+   ============================================ */
+.carousel-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.carousel-item {
+  flex: 0 0 100%;
+}
+
+/* ============================================
+   반응형 유틸리티
+   ============================================ */
+@media (max-width: 768px) {
+  .skill-logo {
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+  }
 }
