@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   keywords: ["포트폴리오", "프론트엔드", "개발자", "커리어", "로드맵", "권인"],
   authors: [{ name: "권인" }],
   icons: {
-    icon: "/favicon_demo.png",
+    icon: "/icon.png",
   },
   openGraph: {
     title: "권인 포트폴리오",
