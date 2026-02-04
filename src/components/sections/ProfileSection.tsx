@@ -24,7 +24,7 @@ export default function ProfileSection() {
                         <span className="gradient-text">Profile</span>
                     </h2>
                     <p className="text-foreground-secondary">
-                        저를 소개합니다
+                        약력 및 기술 역량입니다.
                     </p>
                 </motion.div>
 

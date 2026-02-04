@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Github, ChevronLeft, ChevronRight } from 'lucide-react';
+import { FileText, Github, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { projects } from '@/data/profile';
 
@@ -12,6 +12,11 @@ import { projects } from '@/data/profile';
  */
 export default function ProjectSection() {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [openDemo, setOpenDemo] = useState<{
+        url: string;
+        page: number;
+        title: string;
+    } | null>(null);
 
     const nextSlide = () => {
         setCurrentIndex((prev) => (prev + 1) % projects.length);
@@ -22,6 +27,24 @@ export default function ProjectSection() {
     };
 
     const currentProject = projects[currentIndex];
+
+    useEffect(() => {
+        if (!openDemo) return;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setOpenDemo(null);
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.body.style.overflow = '';
+        };
+    }, [openDemo]);
 
     return (
         <section id="project" className="py-20 px-4 bg-background-secondary">
@@ -38,7 +61,7 @@ export default function ProjectSection() {
                         <span className="gradient-text">Project</span>
                     </h2>
                     <p className="text-foreground-secondary">
-                        참여한 프로젝트를 확인해주세요.
+                        수행한 프로젝트입니다.
                     </p>
                 </motion.div>
 
@@ -101,7 +124,7 @@ export default function ProjectSection() {
                                     )}
 
                                     {/* 태그 */}
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-2 mb-4">
                                         {currentProject.tags.map((tag) => (
                                             <span
                                                 key={tag}
@@ -115,19 +138,24 @@ export default function ProjectSection() {
                                     {/* 링크 */}
                                     <div className="flex gap-4">
                                         {currentProject.links?.demo && (
-                                            <motion.a
-                                                href={currentProject.links.demo}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                            <motion.button
+                                                type="button"
+                                                onClick={() =>
+                                                    setOpenDemo({
+                                                        url: currentProject.links?.demo ?? '',
+                                                        page: currentProject.links?.demoPage ?? 1,
+                                                        title: currentProject.title,
+                                                    })
+                                                }
                                                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
                           bg-accent-primary text-white font-medium
                           hover:bg-accent-secondary transition-colors"
                                                 whileHover={{ scale: 1.02 }}
                                                 whileTap={{ scale: 0.98 }}
                                             >
-                                                <ExternalLink className="w-4 h-4" />
-                                                Demo
-                                            </motion.a>
+                                                <FileText className="w-4 h-4" />
+                                                PDF
+                                            </motion.button>
                                         )}
                                         {currentProject.links?.github && (
                                             <motion.a
@@ -191,6 +219,50 @@ export default function ProjectSection() {
                     </div>
                 </div>
             </div>
+
+            <AnimatePresence>
+                {openDemo && (
+                    <motion.div
+                        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setOpenDemo(null)}
+                    >
+                        <motion.div
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label={`${openDemo.title} demo`}
+                            className="w-full max-w-5xl h-[80vh] bg-background-card border border-border rounded-2xl overflow-hidden flex flex-col"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                            onClick={(event) => event.stopPropagation()}
+                        >
+                            <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                                <span className="text-sm text-foreground-secondary">
+                                    {openDemo.title} • Demo PDF
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => setOpenDemo(null)}
+                                    className="text-sm text-foreground-secondary hover:text-foreground transition-colors"
+                                >
+                                    닫기
+                                </button>
+                            </div>
+                            <div className="flex-1 bg-black/5">
+                                <iframe
+                                    title={`${openDemo.title} demo pdf`}
+                                    src={`${openDemo.url}#page=${openDemo.page}`}
+                                    className="w-full h-full"
+                                />
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
