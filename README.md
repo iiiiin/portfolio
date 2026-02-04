@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio (Next.js)
 
-## Getting Started
+개인 포트폴리오 사이트입니다. 섹션별 데이터를 `src/data`에서 관리하고, Framer Motion으로 자연스러운 인터랙션을 제공합니다.
 
-First, run the development server:
+## Highlights
+- Hero / Profile / Project / Contact 섹션 구성
+- 프로젝트 캐러셀 + GitHub/PDF 링크 버튼
+- 데이터 중심 구조 (`src/data/profile.ts`, `src/data/sections.ts`)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- Framer Motion
+
+## Structure
+```
+src/
+  app/
+    page.tsx
+  components/
+    HeroSection.tsx
+    navigation/RightNav.tsx
+    sections/
+      ProfileSection.tsx
+      ProjectSection.tsx
+      ContactSection.tsx
+  data/
+    profile.ts
+    sections.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Data Flow
+```mermaid
+flowchart TD
+  A[src/data/profile.ts] --> B[ProjectSection]
+  A --> C[ProfileSection]
+  D[src/data/sections.ts] --> E[RightNav]
+  F[app/page.tsx] --> B
+  F --> C
+  F --> E
+  F --> G[HeroSection]
+  F --> H[ContactSection]
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Demo PDF
+프로젝트 카드의 `PDF` 버튼은 모달로 PDF를 열고 특정 페이지로 이동합니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- PDF는 `public/` 아래에 둡니다.
+- `links.demo`에 PDF 경로를 넣고, `links.demoPage`로 페이지 번호를 지정합니다.
 
-## Learn More
+예시:
+```ts
+links: {
+  demo: "/pdfs/review.pdf",
+  demoPage: 3,
+  github: "https://github.com/your/repo"
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Getting Started
+```bash
+npm install
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Build
+```bash
+npm run build
+npm run start
+```
