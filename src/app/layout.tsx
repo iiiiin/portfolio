@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
+import RightNav from "@/components/navigation/RightNav";
 import "./globals.css";
 
 // 폰트 설정
@@ -35,11 +37,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
+      <head>
+        <Script id="theme-init" strategy="beforeInteractive">
+          {`(() => {
+            try {
+              const storedTheme = localStorage.getItem('theme');
+              if (storedTheme === 'light' || storedTheme === 'dark') {
+                document.documentElement.dataset.theme = storedTheme;
+              } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.dataset.theme = prefersDark ? 'dark' : 'light';
+              }
+            } catch {}
+          })();`}
+        </Script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <RightNav />
+        <div className="pt-20">{children}</div>
       </body>
     </html>
   );

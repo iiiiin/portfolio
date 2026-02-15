@@ -6,6 +6,8 @@
 - Hero / Profile / Project / Contact 섹션 구성
 - 프로젝트 캐러셀 + GitHub/PDF 링크 버튼
 - 데이터 중심 구조 (`src/data/profile.ts`, `src/data/sections.ts`)
+- MDX 기반 블로그 (`/blog`, `/blog/[slug]`)
+- Upstash 기반 조회수, Giscus 댓글 연동
 
 ## Stack
 - Next.js (App Router)
@@ -20,14 +22,22 @@ src/
     page.tsx
   components/
     HeroSection.tsx
+    blog/
+      BlogViewCounter.tsx
+      GiscusComments.tsx
     navigation/RightNav.tsx
     sections/
       ProfileSection.tsx
       ProjectSection.tsx
       ContactSection.tsx
+  content/
+    blog/
   data/
     profile.ts
     sections.ts
+  lib/
+    blog.ts
+    upstash.ts
 ```
 
 ## Data Flow
@@ -62,6 +72,32 @@ links: {
 ```bash
 npm install
 npm run dev
+```
+
+## Blog Setup
+1. `.env.example`를 참고해 `.env.local` 파일을 생성합니다.
+2. 조회수용 Upstash Redis 정보를 채웁니다.
+3. 댓글용 Giscus 정보를 채웁니다.
+
+필수 환경변수:
+```bash
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+NEXT_PUBLIC_GISCUS_REPO=
+NEXT_PUBLIC_GISCUS_REPO_ID=
+NEXT_PUBLIC_GISCUS_CATEGORY=
+NEXT_PUBLIC_GISCUS_CATEGORY_ID=
+```
+
+## Install Notes
+블로그 기능에 필요한 패키지:
+```bash
+npm install next-mdx-remote gray-matter rehype-pretty-code @tailwindcss/typography
+```
+
+새 글 작성 경로:
+```bash
+src/content/blog/*.mdx
 ```
 
 ## Build

@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Github, Mail } from 'lucide-react';
 import Image from 'next/image';
 import { profile } from '@/data/profile';
 
@@ -23,9 +24,6 @@ export default function ProfileSection() {
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
                         <span className="gradient-text">Profile</span>
                     </h2>
-                    <p className="text-foreground-secondary">
-                        약력 및 기술 역량입니다.
-                    </p>
                 </motion.div>
 
                 {/* 프로필 카드 */}
@@ -63,8 +61,33 @@ export default function ProfileSection() {
                                 {profile.title}
                             </p>
 
-                            {/* 자기소개 (아이콘 링크 자리에 배치) */}
-                            <p className="text-base text-foreground-secondary leading-relaxed text-center md:text-left whitespace-pre-line">
+                            <div className="flex items-center gap-3">
+                                {profile.github ? (
+                                    <motion.a
+                                        href={profile.github}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background-secondary text-foreground-secondary transition-colors hover:border-accent-primary/50 hover:bg-accent-primary/10 hover:text-accent-primary"
+                                        whileHover={{ scale: 1.08, y: -2 }}
+                                        whileTap={{ scale: 0.96 }}
+                                        title="GitHub"
+                                    >
+                                        <Github className="h-5 w-5" />
+                                    </motion.a>
+                                ) : null}
+                                <motion.a
+                                    href={`mailto:${profile.email}`}
+                                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background-secondary text-foreground-secondary transition-colors hover:border-accent-primary/50 hover:bg-accent-primary/10 hover:text-accent-primary"
+                                    whileHover={{ scale: 1.08, y: -2 }}
+                                    whileTap={{ scale: 0.96 }}
+                                    title="Email"
+                                >
+                                    <Mail className="h-5 w-5" />
+                                </motion.a>
+                            </div>
+
+                            {/* 자기소개 */}
+                            <p className="mt-8 text-base text-foreground-secondary leading-relaxed text-center md:text-left whitespace-pre-line">
                                 {profile.bio}
                             </p>
                         </div>
