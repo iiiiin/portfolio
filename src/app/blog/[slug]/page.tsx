@@ -41,8 +41,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-background px-4 py-16">
-      <article className="mx-auto max-w-3xl">
+    <main className="min-h-screen bg-background px-4 pt-16 flex flex-col">
+      <article className="mx-auto max-w-3xl flex-1 w-full">
         <Link
           href="/blog"
           className="text-sm text-foreground-muted transition-colors hover:text-accent-primary"
@@ -89,6 +89,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
         <GiscusComments slug={post.slug} />
       </article>
+      <footer className="border-t border-gray-200 py-8 text-center">
+        <p className="text-sm text-foreground-muted">
+          © 2026. Kwon In. All rights reserved.
+        </p>
+      </footer>
     </main>
   );
 }
