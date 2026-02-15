@@ -25,7 +25,7 @@ export default function Home() {
       {/* 푸터 */}
       <footer className="py-8 text-center border-t border-gray-200">
         <p className="text-sm text-foreground-muted">
-          © 2026 권인 Portfolio. Built with Next.js & Framer Motion.
+          © 2026. Kwon In. All rights reserved.
         </p>
       </footer>
     </main>
