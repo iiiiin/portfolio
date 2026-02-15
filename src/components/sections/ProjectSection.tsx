@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Github } from 'lucide-react';
+import { FileText, Github, Store } from 'lucide-react';
 import Image from 'next/image';
 import { projects } from '@/data/profile';
 
@@ -35,8 +35,9 @@ export default function ProjectSection() {
         };
     }, [openDemo]);
 
-    const reviewProject = projects.find((project) => project.id === 'review');
-    const mobileProjects = projects.filter((project) => project.id !== 'review');
+    const reviewProject = projects.find((project) => project.displayType === 'web') ?? projects.find((project) => project.id === 'review');
+    const reviewSubProjects = projects.filter((project) => project.displayType === 'chrome-ext').slice(0, 2);
+    const mobileProjects = projects.filter((project) => project.displayType === 'app');
 
     return (
         <section id="project" className="py-20 px-4 bg-background-secondary">
@@ -141,30 +142,44 @@ export default function ProjectSection() {
                                             GitHub
                                         </motion.a>
                                     )}
+                                    {reviewProject.links?.store && (
+                                        <motion.a
+                                            href={reviewProject.links.store}
+                                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
+                        bg-background-secondary border border-border
+                        text-foreground-secondary hover:text-foreground
+                        transition-colors"
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
+                                        >
+                                            <Store className="w-4 h-4" />
+                                            Store
+                                        </motion.a>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </motion.div>
                 ) : null}
 
-                {/* 2행: RE:VIEW 카드 2개 (앱 카드와 동일한 가로형) */}
-                {reviewProject ? (
+                {/* 2행: RE:VIEW 서브 카드 2개 (앱 카드와 동일한 가로형) */}
+                {reviewSubProjects.length > 0 ? (
                     <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-                        {[0, 1].map((duplicateIndex) => (
+                        {reviewSubProjects.map((project, index) => (
                             <motion.div
-                                key={`review-horizontal-copy-${duplicateIndex}`}
+                                key={project.id}
                                 className="card p-6 md:p-7 h-full"
                                 initial={{ opacity: 0, y: 24 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, amount: 0.2 }}
-                                transition={{ duration: 0.4, delay: duplicateIndex * 0.05 }}
+                                transition={{ duration: 0.4, delay: index * 0.05 }}
                             >
                                 <div className="flex h-full flex-col gap-6 sm:flex-row">
-                                    <div className="sm:w-[180px] sm:shrink-0 flex items-start justify-center">
-                                        {reviewProject.image ? (
+                                    <div className="sm:w-[180px] sm:shrink-0 flex items-center justify-center">
+                                        {project.image ? (
                                             <Image
-                                                src={reviewProject.image}
-                                                alt={`${reviewProject.title} preview`}
+                                                src={project.image}
+                                                alt={`${project.title} preview`}
                                                 width={180}
                                                 height={320}
                                                 className="h-auto w-[140px] sm:w-[160px] object-contain"
@@ -175,13 +190,13 @@ export default function ProjectSection() {
                                     </div>
 
                                     <div className="flex flex-1 flex-col">
-                                        <h3 className="text-2xl font-bold text-foreground mb-2">{reviewProject.title}</h3>
-                                        <p className="text-foreground-secondary leading-relaxed mb-5">{reviewProject.description}</p>
+                                        <h3 className="text-2xl font-bold text-foreground mb-2">{project.title}</h3>
+                                        <p className="text-foreground-secondary leading-relaxed mb-5">{project.description}</p>
 
-                                        {reviewProject.highlights && (
+                                        {project.highlights && (
                                             <div className="space-y-2 mb-5">
-                                                {reviewProject.highlights.map((item) => (
-                                                    <div key={`${reviewProject.id}-horizontal-${duplicateIndex}-${item.label}`} className="flex flex-col">
+                                                {project.highlights.map((item) => (
+                                                    <div key={`${project.id}-${item.label}`} className="flex flex-col">
                                                         <span className="text-sm font-semibold text-accent-primary">{item.label}</span>
                                                         <span className="text-sm text-foreground-secondary">{item.text}</span>
                                                     </div>
@@ -190,9 +205,9 @@ export default function ProjectSection() {
                                         )}
 
                                         <div className="mb-5 flex flex-wrap gap-2">
-                                            {reviewProject.tags.map((tag) => (
+                                            {project.tags.map((tag) => (
                                                 <span
-                                                    key={`${reviewProject.id}-horizontal-${duplicateIndex}-${tag}`}
+                                                    key={`${project.id}-${tag}`}
                                                     className="px-3 py-1.5 text-xs bg-accent-primary/10 text-accent-primary rounded-full border border-accent-primary/20"
                                                 >
                                                     {tag}
@@ -201,14 +216,14 @@ export default function ProjectSection() {
                                         </div>
 
                                         <div className="mt-auto flex flex-wrap gap-3">
-                                            {reviewProject.links?.demo && (
+                                            {project.links?.demo && (
                                                 <motion.button
                                                     type="button"
                                                     onClick={() =>
                                                         setOpenDemo({
-                                                            url: reviewProject.links?.demo ?? '',
-                                                            page: reviewProject.links?.demoPage ?? 1,
-                                                            title: reviewProject.title,
+                                                            url: project.links?.demo ?? '',
+                                                            page: project.links?.demoPage ?? 1,
+                                                            title: project.title,
                                                         })
                                                     }
                                                     className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
@@ -221,9 +236,9 @@ export default function ProjectSection() {
                                                     PDF
                                                 </motion.button>
                                             )}
-                                            {reviewProject.links?.github && (
+                                            {project.links?.github && (
                                                 <motion.a
-                                                    href={reviewProject.links.github}
+                                                    href={project.links.github}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
@@ -235,6 +250,20 @@ export default function ProjectSection() {
                                                 >
                                                     <Github className="w-4 h-4" />
                                                     GitHub
+                                                </motion.a>
+                                            )}
+                                            {project.links?.store && (
+                                                <motion.a
+                                                    href={project.links.store}
+                                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
+                        bg-background-secondary border border-border
+                        text-foreground-secondary hover:text-foreground
+                        transition-colors"
+                                                    whileHover={{ scale: 1.02 }}
+                                                    whileTap={{ scale: 0.98 }}
+                                                >
+                                                    <Store className="w-4 h-4" />
+                                                    Store
                                                 </motion.a>
                                             )}
                                         </div>
@@ -332,6 +361,20 @@ export default function ProjectSection() {
                                             >
                                                 <Github className="w-4 h-4" />
                                                 GitHub
+                                            </motion.a>
+                                        )}
+                                        {project.links?.store && (
+                                            <motion.a
+                                                href={project.links.store}
+                                                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
+                        bg-background-secondary border border-border
+                        text-foreground-secondary hover:text-foreground
+                        transition-colors"
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.98 }}
+                                            >
+                                                <Store className="w-4 h-4" />
+                                                Store
                                             </motion.a>
                                         )}
                                     </div>

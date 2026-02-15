@@ -41,6 +41,7 @@ export interface SkillCategory {
 
 export interface Project {
     id: string;
+    displayType?: 'web' | 'chrome-ext' | 'app';
     title: string;
     description: string;
     image?: string;
@@ -52,6 +53,7 @@ export interface Project {
     links?: {
         demo?: string;
         demoPage?: number;
+        store?: string;
         github?: string;
     };
 }
@@ -122,6 +124,7 @@ export const profile: ProfileData = {
 export const projects: Project[] = [
     {
         id: 'pawprint',
+        displayType: 'app',
         title: 'PAWPRINT',
         description: '반려동물 건강 분석/활동량 관리 서비스',
         image: '/pawprint_1_bg.png',
@@ -139,6 +142,7 @@ export const projects: Project[] = [
     },
     {
         id: 'review',
+        displayType: 'web',
         title: 'RE:VIEW',
         description: 'AI 면접 코칭 피드백 웹 서비스',
         image: '/review.png',
@@ -155,7 +159,42 @@ export const projects: Project[] = [
         },
     },
     {
+        id: 'turtleneck-reminder',
+        displayType: 'chrome-ext',
+        title: '거북목 알리미',
+        description: '브라우저 사용 시간 기반 자세 교정 리마인더 크롬 확장프로그램',
+        image: '/neckno.png',
+        tags: ['Chrome Extension', 'Manifest V3', 'Alarms API', 'Notifications API', 'i18n'],
+        highlights: [
+            { label: '핵심 주제', text: '시간 경과 기반 자세 교정 알림 UX' },
+            { label: '적용 내용', text: '백그라운드 알람/알림, 아이콘 상태 전환, 리마인더 캐릭터 선택 기능 구현' },
+            { label: '성과', text: '브라우저 사용 중 자세 점검 루틴을 자연스럽게 유도' },
+        ],
+        links: {
+            store: 'https://chromewebstore.google.com/detail/dnojahjhfhgblnfggidnhjnjmfeeenmi?utm_source=item-share-cb',
+            github: 'https://github.com/iiiiin/turtleneck-reminder.git',
+        },
+    },
+    {
+        id: 'lunch-hourglass',
+        displayType: 'chrome-ext',
+        title: '배꼽시계',
+        description: '출근부터 점심까지 시간을 픽셀 버거 레이어로 시각화하는 크롬 확장프로그램',
+        image: '/burger.png',
+        tags: ['Chrome Extension', 'Manifest V3', 'Content Script', 'Storage API', 'i18n'],
+        highlights: [
+            { label: '핵심 주제', text: '시간 흐름을 직관적으로 보여주는 웹 오버레이' },
+            { label: '적용 내용', text: '출근/점심 시각 기반 5단계 스케줄 계산, 드래그 이동, 사이트별 비활성화 토글 구현' },
+            { label: '성과', text: '점심 전 시간 인지를 재미있게 유지하는 사용자 경험 제공' },
+        ],
+        links: {
+            // store: '#',
+            github: 'https://github.com/iiiiin/lunch-hourglass.git',
+        },
+    },
+    {
         id: 'cocos-forest',
+        displayType: 'app',
         title: '코코의 숲',
         description: '소비내역 기반 탄소배출량 추적 앱',
         image: '/cocosforest_1.png',
