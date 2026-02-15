@@ -11,13 +11,13 @@ export default async function BlogPage() {
 
   return (
     <main className="min-h-screen bg-background px-4 pt-16 flex flex-col">
-      <section className="mx-auto max-w-4xl flex-1 w-full">
+      <section className="mx-auto max-w-4xl flex-1 w-full pb-8">
         <header className="mb-10">
           <h1 className="mt-2 text-4xl font-bold text-foreground">Blog</h1>
         </header>
         <BlogPostList posts={posts} />
       </section>
-      <footer className="border-t border-gray-200 py-8 text-center">
+      <footer className="mt-14 border-t border-gray-200 py-8 text-center">
         <p className="text-sm text-foreground-muted">
           © 2026. Kwon In. All rights reserved.
         </p>

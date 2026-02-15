@@ -256,18 +256,91 @@ body {
    ============================================ */
 [data-rehype-pretty-code-figure] {
   margin: 1.5rem 0;
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: #1f2937;
 }
 
 [data-rehype-pretty-code-figure] pre {
-  border: 1px solid var(--border-color);
-  border-radius: 0.75rem;
+  border: 0;
+  border-radius: 0;
   padding: 1rem;
   overflow-x: auto;
   font-size: 0.875rem;
+  margin: 0;
+}
+
+[data-rehype-pretty-code-figure] pre code {
+  color: inherit;
+  background: transparent;
+}
+
+html[data-theme='light'] [data-rehype-pretty-code-figure] pre {
+  background-color: transparent !important;
+  color: var(--shiki-light, #1f2328) !important;
+}
+
+html[data-theme='light'] [data-rehype-pretty-code-figure] {
+  background-color: #edf1f6;
+  border-color: #d0d7de;
+}
+
+html[data-theme='dark'] [data-rehype-pretty-code-figure] pre {
+  background-color: transparent !important;
+  color: var(--shiki-dark, #c9d1d9) !important;
+}
+
+html[data-theme='dark'] [data-rehype-pretty-code-figure] {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+html[data-theme='light'] [data-rehype-pretty-code-figure] code span {
+  color: var(--shiki-light) !important;
+  background-color: transparent !important;
+}
+
+html[data-theme='dark'] [data-rehype-pretty-code-figure] code span {
+  color: var(--shiki-dark) !important;
+  background-color: transparent !important;
 }
 
 [data-rehype-pretty-code-figure] code {
   display: grid;
+}
+
+/* Inline code only (not code blocks) */
+.prose :not(pre) > code {
+  border: 1px solid var(--border-color);
+  border-radius: 0.4rem;
+  background-color: var(--background-secondary);
+  color: var(--foreground);
+  padding: 0.1rem 0.35rem;
+  font-size: 0.9em;
+}
+
+.code-block-wrap {
+  position: relative;
+}
+
+.code-copy-button {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.75rem;
+  background: var(--background-card);
+  color: var(--foreground-secondary);
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.code-copy-button:hover {
+  color: var(--accent-primary);
+  border-color: color-mix(in srgb, var(--accent-primary) 45%, var(--border-color));
+  background-color: var(--background-secondary);
 }
 
 /* ============================================
