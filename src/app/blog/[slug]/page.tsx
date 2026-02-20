@@ -7,6 +7,7 @@ import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import BlogViewCounter from "@/components/blog/BlogViewCounter";
 import GiscusComments from "@/components/blog/GiscusComments";
 import CodeBlockCopyEnhancer from "@/components/blog/CodeBlockCopyEnhancer";
+import MermaidRenderer from "@/components/blog/MermaidRenderer";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -40,6 +41,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!post) {
     notFound();
   }
+  const hasMermaidBlocks = /```mermaid\b/i.test(post.content);
 
   return (
     <main className="min-h-screen bg-background px-4 pt-16 flex flex-col">
@@ -91,6 +93,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             }}
           />
         </div>
+        {hasMermaidBlocks ? <MermaidRenderer slug={post.slug} /> : null}
         <CodeBlockCopyEnhancer />
         <GiscusComments slug={post.slug} />
       </article>

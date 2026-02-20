@@ -310,6 +310,14 @@ html[data-theme='dark'] [data-rehype-pretty-code-figure] code span {
   display: grid;
 }
 
+.mermaid-diagram {
+  min-width: max-content;
+}
+
+.mermaid-diagram svg {
+  display: block;
+}
+
 /* Inline code only (not code blocks) */
 .prose :not(pre) > code {
   border: 1px solid var(--border-color);
