@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
+import remarkGfm from "remark-gfm";
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import BlogViewCounter from "@/components/blog/BlogViewCounter";
 import GiscusComments from "@/components/blog/GiscusComments";
@@ -77,6 +78,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             source={post.content}
             options={{
               mdxOptions: {
+                remarkPlugins: [remarkGfm],
                 rehypePlugins: [
                   [
                     rehypePrettyCode,
