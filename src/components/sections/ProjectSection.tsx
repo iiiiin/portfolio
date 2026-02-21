@@ -162,10 +162,10 @@ export default function ProjectSection() {
                     </motion.div>
                 ) : null}
 
-                {/* 2행: RE:VIEW 서브 카드 2개 (앱 카드와 동일한 가로형) */}
-                {reviewSubProjects.length > 0 ? (
+                {/* 2행: 앱 카드 2개 */}
+                {mobileProjects.length > 0 ? (
                     <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-                        {reviewSubProjects.map((project, index) => (
+                        {mobileProjects.map((project, index) => (
                             <motion.div
                                 key={project.id}
                                 className="card p-6 md:p-7 h-full"
@@ -175,7 +175,7 @@ export default function ProjectSection() {
                                 transition={{ duration: 0.4, delay: index * 0.05 }}
                             >
                                 <div className="flex h-full flex-col gap-6 sm:flex-row">
-                                    <div className="sm:w-[180px] sm:shrink-0 flex items-center justify-center">
+                                    <div className="sm:w-[180px] sm:shrink-0 flex items-start justify-center">
                                         {project.image ? (
                                             <Image
                                                 src={project.image}
@@ -274,9 +274,9 @@ export default function ProjectSection() {
                     </div>
                 ) : null}
 
-                {/* 3행: 기존 앱 카드 2개 */}
+                {/* 3행: 크롬 확장 카드 2개 */}
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    {mobileProjects.map((project, index) => (
+                    {reviewSubProjects.map((project, index) => (
                         <motion.div
                             key={project.id}
                             className="card p-6 md:p-7 h-full"
@@ -286,7 +286,7 @@ export default function ProjectSection() {
                             transition={{ duration: 0.4, delay: index * 0.05 }}
                         >
                             <div className="flex h-full flex-col gap-6 sm:flex-row">
-                                <div className="sm:w-[180px] sm:shrink-0 flex items-start justify-center">
+                                <div className="sm:w-[180px] sm:shrink-0 flex items-center justify-center">
                                     {project.image ? (
                                         <Image
                                             src={project.image}
