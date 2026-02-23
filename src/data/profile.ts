@@ -135,7 +135,7 @@ export const projects: Project[] = [
             { label: '기여 내용', text: '실사용 환경에서 인증 오류 및 운영 리스크 감소' },
         ],
         links: {
-            demo: '/pdfs/포트폴리오_크로스플랫폼_권인.pdf',
+            demo: '/pdfs/권인_포트폴리오.pdf',
             demoPage: 4,
             github: '',
         },
@@ -153,8 +153,8 @@ export const projects: Project[] = [
             { label: '기여 내용', text: '재로그인 없는 UX, API 재요청 안정화' },
         ],
         links: {
-            demo: '/pdfs/포트폴리오_크로스플랫폼_권인.pdf',
-            demoPage: 11,
+            demo: '/pdfs/권인_포트폴리오.pdf',
+            demoPage: 7,
             github: 'https://github.com/iiiiin/review.git',
         },
     },
@@ -205,8 +205,8 @@ export const projects: Project[] = [
             { label: '기여 내용', text: '로딩 시간 단축 및 네트워크 요청 감소' },
         ],
         links: {
-            demo: '/pdfs/포트폴리오_크로스플랫폼_권인.pdf',
-            demoPage: 8,
+            demo: '/pdfs/권인_포트폴리오.pdf',
+            demoPage: 10,
             github: 'https://github.com/iiiiin/cocos-forest.git',
         },
     },
