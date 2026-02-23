@@ -5,6 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
+import { getSiteUrl } from "@/lib/site-url";
 import BlogViewCounter from "@/components/blog/BlogViewCounter";
 import GiscusComments from "@/components/blog/GiscusComments";
 import CodeBlockCopyEnhancer from "@/components/blog/CodeBlockCopyEnhancer";
@@ -24,6 +25,7 @@ export async function generateMetadata({
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
+  const siteUrl = getSiteUrl();
 
   if (!post) {
     return {};
@@ -32,6 +34,17 @@ export async function generateMetadata({
   return {
     title: `${post.title} | Blog`,
     description: post.description,
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
+    openGraph: {
+      title: `${post.title} | Blog`,
+      description: post.description,
+      type: "article",
+      url: `${siteUrl}/blog/${slug}`,
+      publishedTime: post.date,
+      tags: post.tags,
+    },
   };
 }
 

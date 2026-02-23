@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import RightNav from "@/components/navigation/RightNav";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 // 폰트 설정
@@ -14,13 +15,21 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+const siteUrl = getSiteUrl();
 
 // SEO 메타데이터
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "권인 포트폴리오",
-  description: "대학 졸업부터 현재까지의 커리어 여정을 시각적으로 표현한 개인 포트폴리오 웹사이트입니다.",
+  description: "개발자 권인의 개인 포트폴리오 웹사이트입니다.",
   keywords: ["포트폴리오", "프론트엔드", "개발자", "커리어", "로드맵", "권인"],
   authors: [{ name: "권인" }],
+  alternates: {
+    canonical: "/",
+  },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
   icons: {
     icon: "/icon.png",
   },
@@ -28,6 +37,9 @@ export const metadata: Metadata = {
     title: "권인 포트폴리오",
     description: "대학 졸업부터 현재까지의 커리어 여정을 시각적으로 표현한 개인 포트폴리오 웹사이트입니다.",
     type: "website",
+    siteName: "권인 포트폴리오",
+    url: "/",
+    locale: "ko_KR",
   },
 };
 

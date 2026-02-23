@@ -1,9 +1,21 @@
 import { getAllPosts } from "@/lib/blog";
 import BlogPostList from "@/components/blog/BlogPostList";
+import { getSiteUrl } from "@/lib/site-url";
+
+const siteUrl = getSiteUrl();
 
 export const metadata = {
   title: "Blog | 권인 포트폴리오",
   description: "개발 과정과 프로젝트 회고를 기록하는 블로그입니다.",
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    title: "Blog | 권인 포트폴리오",
+    description: "개발 과정과 프로젝트 회고를 기록하는 블로그입니다.",
+    type: "website",
+    url: `${siteUrl}/blog`,
+  },
 };
 
 export default async function BlogPage() {
