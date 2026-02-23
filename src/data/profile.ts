@@ -62,7 +62,7 @@ export interface Project {
 export const profile: ProfileData = {
     name: '권인',
     title: 'Frontend Developer',
-    tagline: '사용자 경험을 중시하는 프론트엔드 개발자',
+    tagline: '확장성 있는 사용자 경험을 설계하는 개발자',
     avatarUrl: '/personal.png',
     bio: '안녕하세요! 저는 프론트엔드 개발자입니다. \n Flutter와 React를 주로 사용하며, \n 사용자 중심의 인터페이스를 만드는 것을 좋아합니다. \n 새로운 기술을 배우고 적용하는 것을 즐기며, \n 팀과 함께 성장하는 것을 중요하게 생각합니다.',
     email: 'in24041210@gmail.com',
