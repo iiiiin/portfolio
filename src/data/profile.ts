@@ -188,7 +188,7 @@ export const projects: Project[] = [
             { label: '성과', text: '점심 전 시간 인지를 재미있게 유지하는 사용자 경험 제공' },
         ],
         links: {
-            // store: '#',
+            store: 'https://chromewebstore.google.com/detail/cickockdphahndbedfjbjalmkoepijag?utm_source=item-share-cb',
             github: 'https://github.com/iiiiin/lunch-hourglass.git',
         },
     },
