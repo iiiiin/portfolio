@@ -1,0 +1,78 @@
+---
+title: "[Flutter] FVM"
+description: "프로젝트별로 Flutter SDK 버전을 관리하는 FVM의 설치부터 VSCode 설정까지 정리했습니다."
+date: "2025-11-07"
+tags: ["Flutter", "FVM"]
+---
+
+## FVM
+
+nvm 이 node.js의 버전을 관리하는 것처럼,  
+**FVM**은 프로젝트별로 서로 다른 Flutter SDK 버전을 독립적으로 사용할 수 있게 돕는 도구이다.
+
+> **SDK (Software Development Kit)**  
+> 소프트웨어를 개발하기 위한 도구 모음  
+> Flutter SDK에는 Dart 컴파일러, 프레임워크, 디버깅 도구 등이 포함되어 있다.  
+
+팀원들과 **버전을 통일**해야하기 때문에 이 파일은 공유되어야 한다.  
+
+## 설치 및 사용 (macOS + VSCode)
+
+1. FVM 설치
+
+  ```bash
+  brew tap leoafarias/fvm
+  brew install fvm
+  ```
+  
+2. 프로젝트 적용하기
+
+  * 기존 프로젝트에 설정된 버전 설치 시:   
+    `.fvmrc` 파일이 이미 있는 프로젝트라면 다음 명령어로 즉시 SDK를 세팅할 수 있다.
+    ```bash
+    fvm install
+    ```
+
+  * 새로운 버전을 프로젝트에 지정할 시:  
+    특정 버전을 사용하도록 설정하면 프로젝트 루트에 .fvm 폴더와 .fvmrc 파일이 생성된다.
+    ```bash
+    fvm use 3.32.0
+    ```
+
+3. 명령어 실행
+
+  flutter 명령어 앞에 fvm을 붙여서 실행한다.  
+  시스템 전체에 깔린 Flutter가 아닌, 현재 프로젝트에 설정된 SDK를 사용한다.
+  ```
+  fvm flutter run
+  fvm dart format .
+  ```
+
+4. `.gitignore` 파일 설정
+
+  `.fvm/`과 달리, 버전 정보가 담긴 `.fvmrc`는 반드시 팀원과 공유해야 한다.
+  ```
+  # .gitignore
+  .fvm/flutter_sdk
+  ```
+
+5. VSCode 환경 설정
+
+  VSCode가 프로젝트의 FVM SDK를 인식하도록 `.vscode/settings.json` 파일을 생성하고 아래 내용을 추가한다.
+  ```json
+  {
+    "dart.flutterSdkPath": ".fvm/flutter_sdk",
+    // 프로젝트 내에서만 이 SDK를 사용하도록 설정
+    "search.exclude": {
+      "**/.fvm": true
+    },
+    "files.watcherExclude": {
+      "**/.fvm": true
+    }
+  }
+  ```
+
+---
+
+## 참고
+[FVM 공식문서](https://fvm.app/documentation/getting-started)
