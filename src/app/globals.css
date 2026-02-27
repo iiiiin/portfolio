@@ -318,6 +318,20 @@ html[data-theme='dark'] [data-rehype-pretty-code-figure] code span {
   display: block;
 }
 
+/* Prose blockquote: disable auto italic and quote marks */
+.prose blockquote {
+  font-style: normal;
+}
+
+.prose blockquote p {
+  font-style: normal;
+}
+
+.prose blockquote p:first-of-type::before,
+.prose blockquote p:last-of-type::after {
+  content: none;
+}
+
 /* Inline code only (not code blocks) */
 .prose :not(pre) > code {
   border: 1px solid var(--border-color);
