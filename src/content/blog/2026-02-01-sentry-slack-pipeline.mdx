@@ -1,0 +1,46 @@
+---
+title: "[Sentry] Sentry와 Slack 연동하기"
+description: "운영 중 빠른 이슈 추적을 위한 Slack 연동 파이프라인을 구축했습니다."
+date: "2026-02-01"
+tags: ["Sentry", "Google Analytics", "Slack"]
+---
+
+사용자 테스트 운영 중 팀원으로부터 공유되는 VOC로는 정확한 원인 파악이 어려웠다.  
+이를 개선하기 위해 Sentry를 도입하여 Slack으로 알림이 오도록 설정했다.
+
+> **Sentry**  
+> 앱에서 발생하는 에러를 실시간으로 감지하고 분석 보고서를 제공하는 오픈소스 에러 트래킹 서비스,   
+> 단순한 에러 알림을 넘어, 에러 발생 당시의 변수 값, 기기 정보, 호출 스택(Stack Trace) 등을 시각화하여  
+> 개발자가 문제를 즉시 파악하고 재현할 수 있게 도와준다.
+> 
+
+## Sentry 와 Slack 연동
+
+기본적으로, Sentry와 Slack을 연동하면 치명적인 오류는 자동으로 알림을 준다.  
+특정 오류나 위치에서 발생한 에러에 대한 알림을 받으려면 Organization Setting에서 추가로 설정해야 한다.
+
+<BlogImage
+  src="/blog/2026-02-01/sentry-slack.webp"
+  alt="slack"
+  width="942"
+  height="1544"
+  maxWidth="520"
+/>
+
+
+이후 Google Analtycis도 연동하여, 사용자의 로그인 이벤트 등을 집계하도록 추가했다.
+
+## 전체 파이프라인
+
+<BlogImage
+  src="/blog/2026-02-01/pp-m-a-light.webp"
+  alt="pipeline"
+  width="942"
+  height="1544"
+  maxWidth="520"
+/>
+
+## 결론
+
+스택 트레이스를 추적하면서, 사용자의 표현으로는 파악할 수 없는 정보들을 얻을 수 있어 유용했다.  
+에러 발생 상황을 재현해보면서 빠르게 이슈를 파악하고 백엔드 팀원과 공유할 수 있었다.
