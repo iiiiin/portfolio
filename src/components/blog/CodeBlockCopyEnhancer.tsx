@@ -46,7 +46,7 @@ export default function CodeBlockCopyEnhancer() {
       button.addEventListener("click", async () => {
         try {
           await navigator.clipboard.writeText(code.textContent ?? "");
-          button.textContent = "✅ Copied";
+          button.textContent = "✔ Copied";
           window.setTimeout(() => {
             button.textContent = "Copy";
           }, 1200);
