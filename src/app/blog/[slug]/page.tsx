@@ -10,6 +10,7 @@ import BlogViewCounter from "@/components/blog/BlogViewCounter";
 import GiscusComments from "@/components/blog/GiscusComments";
 import CodeBlockCopyEnhancer from "@/components/blog/CodeBlockCopyEnhancer";
 import MermaidRenderer from "@/components/blog/MermaidRenderer";
+import BlogImage from "@/components/blog/BlogImage";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -89,6 +90,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="prose prose-neutral max-w-none prose-headings:text-foreground prose-p:text-foreground-secondary prose-strong:text-foreground prose-a:text-accent-primary">
           <MDXRemote
             source={post.content}
+            components={{
+              BlogImage,
+            }}
             options={{
               mdxOptions: {
                 remarkPlugins: [remarkGfm],
