@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import RightNav from "@/components/navigation/RightNav";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
@@ -68,8 +67,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <RightNav />
-        <div className="pt-20">{children}</div>
+        {children}
       </body>
     </html>
   );
