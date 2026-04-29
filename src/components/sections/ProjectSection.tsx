@@ -1,299 +1,106 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Github, Store } from 'lucide-react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Github, Store } from 'lucide-react';
 import Image from 'next/image';
 import { projects } from '@/data/profile';
 
-/**
- * Project 섹션 컴포넌트
- * - 프로젝트 그리드
- */
+const blogPlaceholders = [
+    {
+        title: '최신 블로그 글 1',
+        description: '외부 블로그 이전 후 연결할 대표 글 자리입니다.',
+    },
+    {
+        title: '최신 블로그 글 2',
+        description: '프로젝트 회고나 기술 정리를 연결할 수 있습니다.',
+    },
+    {
+        title: '최신 블로그 글 3',
+        description: 'Flutter 관련 글을 우선 노출하는 용도로 사용할 수 있습니다.',
+    },
+];
+
 export default function ProjectSection() {
-    const [openDemo, setOpenDemo] = useState<{
-        url: string;
-        page: number;
-        title: string;
-    } | null>(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const visibleProjects = projects
+        .filter((project) => project.id !== 'review')
+        .sort((a, b) => {
+            const order = { app: 0, 'chrome-ext': 1, web: 2 } as const;
+            const aOrder = order[a.displayType ?? 'web'];
+            const bOrder = order[b.displayType ?? 'web'];
+            return aOrder - bOrder;
+        });
+    const currentProject = visibleProjects[currentIndex];
 
-    useEffect(() => {
-        if (!openDemo) return;
+    const handlePrev = () => {
+        setCurrentIndex((prev) => (prev === 0 ? visibleProjects.length - 1 : prev - 1));
+    };
 
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                setOpenDemo(null);
-            }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-        document.body.style.overflow = 'hidden';
-
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-            document.body.style.overflow = '';
-        };
-    }, [openDemo]);
-
-    const reviewProject = projects.find((project) => project.displayType === 'web') ?? projects.find((project) => project.id === 'review');
-    const reviewSubProjects = projects.filter((project) => project.displayType === 'chrome-ext').slice(0, 2);
-    const mobileProjects = projects.filter((project) => project.displayType === 'app');
+    const handleNext = () => {
+        setCurrentIndex((prev) => (prev === visibleProjects.length - 1 ? 0 : prev + 1));
+    };
 
     return (
-        <section id="project" className="py-20 px-4 bg-background-secondary">
-            <div className="max-w-6xl mx-auto">
-                {/* 섹션 헤더 */}
-                <motion.div
-                    className="text-center mb-12"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                        <span className="gradient-text">Project</span>
-                    </h2>
-                </motion.div>
-
-                {/* 1행: RE:VIEW 카드 1개 (풀폭 가로형) */}
-                {reviewProject ? (
-                    <motion.div
-                        className="card mb-6 p-6 md:p-7"
-                        initial={{ opacity: 0, y: 24 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.4 }}
-                    >
-                        <div className="flex h-full flex-col gap-6 md:flex-row">
-                            <div className="md:w-[260px] md:shrink-0 flex items-center justify-center">
-                                {reviewProject.image ? (
-                                    <Image
-                                        src={reviewProject.image}
-                                        alt={`${reviewProject.title} preview`}
-                                        width={280}
-                                        height={180}
-                                        className="h-auto w-full max-w-[260px] object-contain"
-                                    />
-                                ) : (
-                                    <span className="text-6xl">🚀</span>
-                                )}
-                            </div>
-
-                            <div className="flex flex-1 flex-col">
-                                <h3 className="text-2xl font-bold text-foreground mb-2">{reviewProject.title}</h3>
-                                <p className="text-foreground-secondary leading-relaxed mb-5">{reviewProject.description}</p>
-
-                                {reviewProject.highlights && (
-                                    <div className="space-y-2 mb-5">
-                                        {reviewProject.highlights.map((item) => (
-                                            <div key={`${reviewProject.id}-hero-${item.label}`} className="flex flex-col">
-                                                <span className="text-sm font-semibold text-accent-primary">{item.label}</span>
-                                                <span className="text-sm text-foreground-secondary">{item.text}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-
-                                <div className="mb-5 flex flex-wrap gap-2">
-                                    {reviewProject.tags.map((tag) => (
-                                        <span
-                                            key={`${reviewProject.id}-hero-${tag}`}
-                                            className="px-3 py-1.5 text-xs bg-accent-primary/10 text-accent-primary rounded-full border border-accent-primary/20"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                <div className="mt-auto flex flex-wrap gap-3">
-                                    {reviewProject.links?.demo && (
-                                        <motion.button
-                                            type="button"
-                                            onClick={() =>
-                                                setOpenDemo({
-                                                    url: reviewProject.links?.demo ?? '',
-                                                    page: reviewProject.links?.demoPage ?? 1,
-                                                    title: reviewProject.title,
-                                                })
-                                            }
-                                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                        bg-accent-primary text-white font-medium
-                        hover:bg-accent-secondary transition-colors"
-                                            whileHover={{ scale: 1.02 }}
-                                            whileTap={{ scale: 0.98 }}
-                                        >
-                                            <FileText className="w-4 h-4" />
-                                            PDF
-                                        </motion.button>
-                                    )}
-                                    {reviewProject.links?.github && (
-                                        <motion.a
-                                            href={reviewProject.links.github}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                        bg-background-secondary border border-border
-                        text-foreground-secondary hover:text-foreground
-                        transition-colors"
-                                            whileHover={{ scale: 1.02 }}
-                                            whileTap={{ scale: 0.98 }}
-                                        >
-                                            <Github className="w-4 h-4" />
-                                            GitHub
-                                        </motion.a>
-                                    )}
-                                    {reviewProject.links?.store && (
-                                        <motion.a
-                                            href={reviewProject.links.store}
-                                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                        bg-background-secondary border border-border
-                        text-foreground-secondary hover:text-foreground
-                        transition-colors"
-                                            whileHover={{ scale: 1.02 }}
-                                            whileTap={{ scale: 0.98 }}
-                                        >
-                                            <Store className="w-4 h-4" />
-                                            Store
-                                        </motion.a>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                ) : null}
-
-                {/* 2행: 앱 카드 2개 */}
-                {mobileProjects.length > 0 ? (
-                    <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-                        {mobileProjects.map((project, index) => (
-                            <motion.div
-                                key={project.id}
-                                className="card p-6 md:p-7 h-full"
-                                initial={{ opacity: 0, y: 24 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.2 }}
-                                transition={{ duration: 0.4, delay: index * 0.05 }}
-                            >
-                                <div className="flex h-full flex-col gap-6 sm:flex-row">
-                                    <div className="sm:w-[180px] sm:shrink-0 flex items-start justify-center">
-                                        {project.image ? (
-                                            <Image
-                                                src={project.image}
-                                                alt={`${project.title} preview`}
-                                                width={180}
-                                                height={320}
-                                                className="h-auto w-[140px] sm:w-[160px] object-contain"
-                                            />
-                                        ) : (
-                                            <span className="text-5xl">🚀</span>
-                                        )}
-                                    </div>
-
-                                    <div className="flex flex-1 flex-col">
-                                        <h3 className="text-2xl font-bold text-foreground mb-2">{project.title}</h3>
-                                        <p className="text-foreground-secondary leading-relaxed mb-5">{project.description}</p>
-
-                                        {project.highlights && (
-                                            <div className="space-y-2 mb-5">
-                                                {project.highlights.map((item) => (
-                                                    <div key={`${project.id}-${item.label}`} className="flex flex-col">
-                                                        <span className="text-sm font-semibold text-accent-primary">{item.label}</span>
-                                                        <span className="text-sm text-foreground-secondary">{item.text}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-
-                                        <div className="mb-5 flex flex-wrap gap-2">
-                                            {project.tags.map((tag) => (
-                                                <span
-                                                    key={`${project.id}-${tag}`}
-                                                    className="px-3 py-1.5 text-xs bg-accent-primary/10 text-accent-primary rounded-full border border-accent-primary/20"
-                                                >
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
-
-                                        <div className="mt-auto flex flex-wrap gap-3">
-                                            {project.links?.demo && (
-                                                <motion.button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        setOpenDemo({
-                                                            url: project.links?.demo ?? '',
-                                                            page: project.links?.demoPage ?? 1,
-                                                            title: project.title,
-                                                        })
-                                                    }
-                                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                        bg-accent-primary text-white font-medium
-                        hover:bg-accent-secondary transition-colors"
-                                                    whileHover={{ scale: 1.02 }}
-                                                    whileTap={{ scale: 0.98 }}
-                                                >
-                                                    <FileText className="w-4 h-4" />
-                                                    PDF
-                                                </motion.button>
-                                            )}
-                                            {project.links?.github && (
-                                                <motion.a
-                                                    href={project.links.github}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                        bg-background-secondary border border-border
-                        text-foreground-secondary hover:text-foreground
-                        transition-colors"
-                                                    whileHover={{ scale: 1.02 }}
-                                                    whileTap={{ scale: 0.98 }}
-                                                >
-                                                    <Github className="w-4 h-4" />
-                                                    GitHub
-                                                </motion.a>
-                                            )}
-                                            {project.links?.store && (
-                                                <motion.a
-                                                    href={project.links.store}
-                                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                        bg-background-secondary border border-border
-                        text-foreground-secondary hover:text-foreground
-                        transition-colors"
-                                                    whileHover={{ scale: 1.02 }}
-                                                    whileTap={{ scale: 0.98 }}
-                                                >
-                                                    <Store className="w-4 h-4" />
-                                                    Store
-                                                </motion.a>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                ) : null}
-
-                {/* 3행: 크롬 확장 카드 2개 */}
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    {reviewSubProjects.map((project, index) => (
+        <section id="project" className="bg-background-secondary px-4 py-20">
+            <div className="mx-auto max-w-6xl">
+                <div className="grid items-stretch gap-8 lg:grid-cols-2">
+                    <div className="flex flex-col">
                         <motion.div
-                            key={project.id}
-                            className="card p-6 md:p-7 h-full"
+                            className="mb-8 text-center"
                             initial={{ opacity: 0, y: 24 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.2 }}
-                            transition={{ duration: 0.4, delay: index * 0.05 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.45 }}
                         >
-                            <div className="flex h-full flex-col gap-6 sm:flex-row">
-                                <div className="sm:w-[180px] sm:shrink-0 flex items-center justify-center">
-                                    {project.image ? (
+                            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-foreground md:text-4xl">
+                                프로젝트
+                            </h2>
+                        </motion.div>
+
+                        <motion.article
+                            key={currentProject.id}
+                            className="card flex flex-1 flex-col p-6 md:p-7"
+                            initial={{ opacity: 0, y: 24 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.15 }}
+                            transition={{ duration: 0.4 }}
+                        >
+                            <div className="mb-6 flex items-center justify-between gap-4">
+                                <div className="flex items-center gap-3">
+                                    <span className="px-1 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-foreground-muted">
+                                        {currentProject.displayType === 'app' ? 'App' : 'Chrome Extension'}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={handlePrev}
+                                        className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-black hover:text-white"
+                                        aria-label="이전 프로젝트"
+                                    >
+                                        <ArrowLeft className="h-4 w-4" />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleNext}
+                                        className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-black hover:text-white"
+                                        aria-label="다음 프로젝트"
+                                    >
+                                        <ArrowRight className="h-4 w-4" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-1 flex-col gap-6 sm:flex-row">
+                                <div className="flex items-center justify-center sm:w-[170px] sm:shrink-0">
+                                    {currentProject.image ? (
                                         <Image
-                                            src={project.image}
-                                            alt={`${project.title} preview`}
-                                            width={180}
-                                            height={320}
-                                            className="h-auto w-[140px] sm:w-[160px] object-contain"
+                                            src={currentProject.image}
+                                            alt={`${currentProject.title} preview`}
+                                            width={190}
+                                            height={220}
+                                            className="h-auto w-[138px] object-contain sm:w-[158px]"
                                         />
                                     ) : (
                                         <span className="text-5xl">🚀</span>
@@ -301,133 +108,114 @@ export default function ProjectSection() {
                                 </div>
 
                                 <div className="flex flex-1 flex-col">
-                                    <h3 className="text-2xl font-bold text-foreground mb-2">{project.title}</h3>
-                                    <p className="text-foreground-secondary leading-relaxed mb-5">{project.description}</p>
+                                    <h3 className="text-2xl font-semibold text-foreground md:text-3xl">
+                                        {currentProject.title}
+                                    </h3>
+                                    <p className="mt-3 text-base leading-7 text-foreground-secondary">
+                                        {currentProject.description}
+                                    </p>
 
-                                    {project.highlights && (
-                                        <div className="space-y-2 mb-5">
-                                            {project.highlights.map((item) => (
-                                                <div key={`${project.id}-${item.label}`} className="flex flex-col">
-                                                    <span className="text-sm font-semibold text-accent-primary">{item.label}</span>
-                                                    <span className="text-sm text-foreground-secondary">{item.text}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-
-                                    <div className="mb-5 flex flex-wrap gap-2">
-                                        {project.tags.map((tag) => (
+                                    <div className="mt-5 flex flex-wrap gap-2">
+                                        {currentProject.tags.map((tag) => (
                                             <span
-                                                key={`${project.id}-${tag}`}
-                                                className="px-3 py-1.5 text-xs bg-accent-primary/10 text-accent-primary rounded-full border border-accent-primary/20"
+                                                key={`${currentProject.id}-${tag}`}
+                                                className="rounded-full border border-border bg-background px-3 py-1.5 text-xs text-foreground-secondary"
                                             >
                                                 {tag}
                                             </span>
                                         ))}
                                     </div>
 
-                                    <div className="mt-auto flex flex-wrap gap-3">
-                                        {project.links?.demo && (
-                                            <motion.button
-                                                type="button"
-                                                onClick={() =>
-                                                    setOpenDemo({
-                                                        url: project.links?.demo ?? '',
-                                                        page: project.links?.demoPage ?? 1,
-                                                        title: project.title,
-                                                    })
-                                                }
-                                                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                        bg-accent-primary text-white font-medium
-                        hover:bg-accent-secondary transition-colors"
-                                                whileHover={{ scale: 1.02 }}
-                                                whileTap={{ scale: 0.98 }}
-                                            >
-                                                <FileText className="w-4 h-4" />
-                                                PDF
-                                            </motion.button>
-                                        )}
-                                        {project.links?.github && (
+                                    <div className="mt-6 flex flex-wrap gap-3">
+                                        {currentProject.links?.github ? (
                                             <motion.a
-                                                href={project.links.github}
+                                                href={currentProject.links.github}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                        bg-background-secondary border border-border
-                        text-foreground-secondary hover:text-foreground
-                        transition-colors"
-                                                whileHover={{ scale: 1.02 }}
+                                                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-black hover:text-white"
+                                                whileHover={{ y: -1 }}
                                                 whileTap={{ scale: 0.98 }}
+                                                aria-label="GitHub"
                                             >
-                                                <Github className="w-4 h-4" />
-                                                GitHub
+                                                <Github className="h-4 w-4" />
                                             </motion.a>
-                                        )}
-                                        {project.links?.store && (
+                                        ) : null}
+                                        {currentProject.links?.store ? (
                                             <motion.a
-                                                href={project.links.store}
-                                                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
-                        bg-background-secondary border border-border
-                        text-foreground-secondary hover:text-foreground
-                        transition-colors"
-                                                whileHover={{ scale: 1.02 }}
+                                                href={currentProject.links.store}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-black hover:text-white"
+                                                whileHover={{ y: -1 }}
                                                 whileTap={{ scale: 0.98 }}
+                                                aria-label="Store"
                                             >
-                                                <Store className="w-4 h-4" />
-                                                Store
+                                                <Store className="h-4 w-4" />
                                             </motion.a>
-                                        )}
+                                        ) : null}
+                                    </div>
+
+                                    <div className="mt-auto pt-8">
+                                        <div className="flex flex-wrap gap-2">
+                                            {visibleProjects.map((project, index) => (
+                                                <button
+                                                    key={project.id}
+                                                    type="button"
+                                                    onClick={() => setCurrentIndex(index)}
+                                                    className={`h-2.5 rounded-full transition-all ${index === currentIndex
+                                                        ? 'w-8 bg-black'
+                                                        : 'w-2.5 bg-black/20 hover:bg-black/40'
+                                                        }`}
+                                                    aria-label={`${project.title} 보기`}
+                                                />
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </motion.div>
-                    ))}
+                        </motion.article>
+                    </div>
+
+                    <motion.aside
+                        className="flex h-full flex-col"
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.45, delay: 0.1 }}
+                    >
+                        <div className="mb-8 text-center">
+                            <h3 className="text-3xl font-semibold tracking-[-0.04em] text-foreground md:text-4xl">
+                                블로그 최신 글
+                            </h3>
+                        </div>
+
+                        <div className="card flex flex-1 flex-col p-6 md:p-7">
+                            <div className="flex flex-1 flex-col gap-4">
+                                {blogPlaceholders.map((item) => (
+                                    <a
+                                        key={item.title}
+                                        href="#"
+                                        onClick={(event) => event.preventDefault()}
+                                        className="block rounded-xl bg-background p-5 shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-transform hover:-translate-y-0.5"
+                                    >
+                                        <div className="flex items-start justify-between gap-4">
+                                            <div>
+                                                <p className="text-lg font-semibold text-foreground">
+                                                    {item.title}
+                                                </p>
+                                                <p className="mt-2 text-sm leading-6 text-foreground-secondary">
+                                                    {item.description}
+                                                </p>
+                                            </div>
+                                            <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-foreground-muted" />
+                                        </div>
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+                    </motion.aside>
                 </div>
             </div>
-
-            <AnimatePresence>
-                {openDemo && (
-                    <motion.div
-                        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={() => setOpenDemo(null)}
-                    >
-                        <motion.div
-                            role="dialog"
-                            aria-modal="true"
-                            aria-label={`${openDemo.title} demo`}
-                            className="w-full max-w-5xl h-[80vh] bg-background-card border border-border rounded-2xl overflow-hidden flex flex-col"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.2 }}
-                            onClick={(event) => event.stopPropagation()}
-                        >
-                            <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-                                <span className="text-sm text-foreground-secondary">
-                                    {openDemo.title} • Demo PDF
-                                </span>
-                                <button
-                                    type="button"
-                                    onClick={() => setOpenDemo(null)}
-                                    className="text-sm text-foreground-secondary hover:text-foreground transition-colors"
-                                >
-                                    닫기
-                                </button>
-                            </div>
-                            <div className="flex-1 bg-black/5">
-                                <iframe
-                                    title={`${openDemo.title} demo pdf`}
-                                    src={`${openDemo.url}#page=${openDemo.page}`}
-                                    className="w-full h-full"
-                                />
-                            </div>
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </section>
     );
 }

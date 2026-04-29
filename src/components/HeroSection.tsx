@@ -1,100 +1,126 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ChevronDown, ChevronsDown } from 'lucide-react';
+import { ArrowRight, BookOpen, Github, Linkedin, Mail } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { profile } from '@/data/profile';
 
-/**
- * 히어로 섹션 컴포넌트
- * - 심플한 타이틀 중심 디자인
- * - 스크롤 유도 애니메이션
- */
 export default function HeroSection() {
-    const scrollToContent = () => {
+    const scrollToProjects = () => {
         window.scrollTo({
-            top: window.innerHeight * 0.8,
+            top: window.innerHeight * 0.95,
             behavior: 'smooth',
         });
     };
 
+    const socialLinks = [
+        profile.github
+            ? { href: profile.github, label: 'GitHub', icon: Github }
+            : null,
+        profile.linkedin
+            ? { href: profile.linkedin, label: 'LinkedIn', icon: Linkedin }
+            : null,
+        profile.blog
+            ? { href: profile.blog, label: 'Blog', icon: BookOpen }
+            : null,
+        { href: `mailto:${profile.email}`, label: 'Email', icon: Mail },
+    ].filter((item): item is { href: string; label: string; icon: typeof Github } => item !== null);
+
     return (
-        <section className="relative min-h-screen flex flex-col items-center justify-center px-4">
-            {/* 배경 글로우 */}
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="hero-glow" />
-            </div>
-
-            {/* 콘텐츠 */}
-            <motion.div
-                className="relative z-10 text-center max-w-3xl"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-            >
-                {/* 타이틀 */}
-                <motion.h1
-                    className="text-5xl md:text-7xl font-bold mb-6"
-                    initial={{ opacity: 0, y: 20 }}
+        <section className="px-4 pt-2">
+            <div className="mx-auto flex min-h-[82vh] w-full max-w-6xl flex-col">
+                <motion.header
+                    className="flex items-center justify-between border-b border-border py-6"
+                    initial={{ opacity: 0, y: -16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
+                    transition={{ duration: 0.5 }}
                 >
-                    <span className="gradient-text">{profile.hero.titleName}</span>
-                    <span className="text-foreground"> {profile.hero.titleSuffix}</span>
-                </motion.h1>
+                    <Link
+                        href="/"
+                        className="inline-flex items-center"
+                        aria-label="홈으로 이동"
+                    >
+                        <Image
+                            src={profile.headerLogoUrl}
+                            alt={`${profile.name} home logo`}
+                            width={44}
+                            height={44}
+                            className="h-11 w-11 rounded-xl object-cover"
+                            priority
+                        />
+                    </Link>
+                </motion.header>
 
-                {/* 서브타이틀 */}
-                <motion.p
-                    className="text-lg md:text-xl text-foreground-secondary mb-4 max-w-xl mx-auto"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                >
-                    {profile.hero.subtitle}
-                </motion.p>
-
-                <motion.p
-                    className="text-base text-foreground-muted mb-8 max-w-lg mx-auto"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                >
-                    {/* {profile.hero.description} */}
-                </motion.p>
-
-                {/* CTA 버튼 */}
-                <motion.button
-                    onClick={scrollToContent}
-                    className="group inline-flex items-center gap-2 px-10 py-4 rounded-full
-            bg-gradient-to-r from-accent-primary/90 to-accent-tertiary/90
-            text-white font-medium text-lg
-            shadow-[0_18px_45px_rgba(124,101,255,0.25)]
-            hover:shadow-[0_20px_55px_rgba(124,101,255,0.35)]
-            transition-all duration-300"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.5 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
-                >
-                    {profile.hero.ctaLabel}
-                    <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
-                </motion.button>
-            </motion.div>
-
-            {/* 스크롤 유도 아이콘 */}
-            <motion.div
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 text-accent-primary/70"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-            >
+                <h1 className="sr-only">
+                    권인 포트폴리오
+                </h1>
                 <motion.div
-                    animate={{ y: [0, 8, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.5 }}
+                    className="grid flex-1 items-center gap-10 py-10 md:grid-cols-[280px_minmax(0,1fr)] md:py-12"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: 0.1 }}
                 >
-                    <ChevronsDown className="w-8 h-8" />
+                    <div className="flex justify-center md:justify-start">
+                        <div className="hero-avatar-frame">
+                            <div className="hero-avatar-inner">
+                                <Image
+                                    src={profile.avatarUrl}
+                                    alt={`${profile.name} avatar`}
+                                    width={280}
+                                    height={280}
+                                    className="h-full w-full object-cover"
+                                    priority
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-3xl md:pt-8">
+                        <p className="mb-3 text-sm font-medium uppercase tracking-[0.24em] text-foreground-muted">
+                            Software Engineer
+                        </p>
+                        <h2 className="text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-6xl">
+                            안녕하세요, 권인입니다.
+                        </h2>
+                        <p className="mt-8 max-w-2xl text-xl leading-relaxed text-foreground-secondary md:text-3xl md:leading-snug">
+                            필요한 것을 만들기 위해 배우고, 구현합니다.
+                        </p>
+
+                        <div className="mt-10 flex flex-wrap gap-3">
+                            <motion.button
+                                type="button"
+                                onClick={scrollToProjects}
+                                className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+                                whileHover={{ y: -1 }}
+                                whileTap={{ scale: 0.98 }}
+                            >
+                                프로젝트 보기
+                                <ArrowRight className="h-4 w-4" />
+                            </motion.button>
+                        </div>
+
+                        <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3">
+                            {socialLinks.map((item) => {
+                                const Icon = item.icon;
+
+                                return (
+                                    <a
+                                        key={item.label}
+                                        href={item.href}
+                                        target={item.href.startsWith('mailto:') ? undefined : '_blank'}
+                                        rel={item.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                                        className="inline-flex items-center gap-2 text-base text-foreground-secondary transition-colors hover:text-foreground"
+                                    >
+                                        <Icon className="h-4 w-4" />
+                                        {item.label}
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </motion.div>
-            </motion.div>
+            </div>
         </section>
     );
 }

@@ -22,7 +22,7 @@ export default function ProfileSection() {
                     transition={{ duration: 0.6 }}
                 >
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                        <span className="gradient-text">Profile</span>
+                        <span className="gradient-text">About</span>
                     </h2>
                 </motion.div>
 
@@ -37,12 +37,11 @@ export default function ProfileSection() {
                     <div className="flex flex-col md:flex-row gap-8">
                         {/* 왼쪽: 아바타 및 자기소개 */}
                         <div className="flex flex-col items-center md:items-start md:w-1/3">
-                            {/* 아바타 */}
                             <motion.div
-                                className="w-32 h-32 rounded-full bg-gradient-to-br from-accent-primary to-accent-tertiary p-1 mb-4"
+                                className="mb-4 rounded-full border border-border p-2"
                                 whileHover={{ scale: 1.05 }}
                             >
-                                <div className="w-full h-full rounded-full bg-background-card flex items-center justify-center overflow-hidden">
+                                <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-background-secondary">
                                     <Image
                                         src={profile.avatarUrl}
                                         alt={`${profile.name} avatar`}
@@ -57,7 +56,7 @@ export default function ProfileSection() {
                             <h3 className="text-2xl font-bold text-foreground mb-1">
                                 {profile.name}
                             </h3>
-                            <p className="text-accent-primary font-semibold mb-4">
+                            <p className="mb-4 font-semibold text-foreground-secondary">
                                 {profile.title}
                             </p>
 
@@ -67,7 +66,7 @@ export default function ProfileSection() {
                                         href={profile.github}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background-secondary text-foreground-secondary transition-colors hover:border-accent-primary/50 hover:bg-accent-primary/10 hover:text-accent-primary"
+                                        className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background-secondary text-foreground-secondary transition-colors hover:bg-black hover:text-white"
                                         whileHover={{ scale: 1.08, y: -2 }}
                                         whileTap={{ scale: 0.96 }}
                                         title="GitHub"
@@ -77,7 +76,7 @@ export default function ProfileSection() {
                                 ) : null}
                                 <motion.a
                                     href={`mailto:${profile.email}`}
-                                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background-secondary text-foreground-secondary transition-colors hover:border-accent-primary/50 hover:bg-accent-primary/10 hover:text-accent-primary"
+                                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background-secondary text-foreground-secondary transition-colors hover:bg-black hover:text-white"
                                     whileHover={{ scale: 1.08, y: -2 }}
                                     whileTap={{ scale: 0.96 }}
                                     title="Email"
@@ -102,7 +101,7 @@ export default function ProfileSection() {
                                 <div className="space-y-3 text-foreground-secondary text-base">
                                     {profile.timeline.map((item) => (
                                         <div key={`${item.date}-${item.text}`} className="flex items-start gap-3">
-                                            <span className="text-accent-primary font-semibold min-w-[80px]">
+                                            <span className="min-w-[80px] font-semibold text-foreground">
                                                 {item.date}
                                             </span>
                                             <span>{item.text}</span>

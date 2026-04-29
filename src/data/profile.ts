@@ -6,6 +6,7 @@ export interface ProfileData {
     title: string;
     tagline: string;
     avatarUrl: string;
+    headerLogoUrl: string;
     bio: string;
     email: string;
     github?: string;
@@ -51,8 +52,6 @@ export interface Project {
         text: string;
     }[];
     links?: {
-        demo?: string;
-        demoPage?: number;
         store?: string;
         github?: string;
     };
@@ -64,9 +63,11 @@ export const profile: ProfileData = {
     title: 'Frontend Developer',
     tagline: '확장성 있는 사용자 경험을 설계하는 개발자',
     avatarUrl: '/personal.png',
+    headerLogoUrl: '/favicon_rev.png',
     bio: '안녕하세요! 저는 프론트엔드 개발자입니다. \n Flutter와 React를 주로 사용하며, \n 사용자 중심의 인터페이스를 만드는 것을 좋아합니다. \n 새로운 기술을 배우고 적용하는 것을 즐기며, \n 팀과 함께 성장하는 것을 중요하게 생각합니다.',
     email: 'in24041210@gmail.com',
     github: 'https://github.com/iiiiin',
+    linkedin: 'https://www.linkedin.com/in/in-kwon-16258b203/',
     blog: 'https://iiiiin.github.io/',
     skills: [
         {
@@ -135,8 +136,6 @@ export const projects: Project[] = [
             { label: '기여 내용', text: '실사용 환경에서 인증 오류 및 운영 리스크 감소' },
         ],
         links: {
-            demo: '/pdfs/권인_포트폴리오.pdf',
-            demoPage: 4,
             github: '',
         },
     },
@@ -153,8 +152,6 @@ export const projects: Project[] = [
             { label: '기여 내용', text: '재로그인 없는 UX, API 재요청 안정화' },
         ],
         links: {
-            demo: '/pdfs/권인_포트폴리오.pdf',
-            demoPage: 7,
             github: 'https://github.com/iiiiin/review.git',
         },
     },
@@ -205,8 +202,6 @@ export const projects: Project[] = [
             { label: '기여 내용', text: '로딩 시간 단축 및 네트워크 요청 감소' },
         ],
         links: {
-            demo: '/pdfs/권인_포트폴리오.pdf',
-            demoPage: 10,
             github: 'https://github.com/iiiiin/cocos-forest.git',
         },
     },
