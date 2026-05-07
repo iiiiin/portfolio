@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Github, Store } from 'lucide-react
 import Image from 'next/image';
 import type { Locale } from '@/components/PortfolioClient';
 import { projects } from '@/data/profile';
+import type { WordPressPost } from '@/lib/wordpress';
 
 const sectionCopy: Record<Locale, {
     projectTitle: string;
@@ -15,7 +16,7 @@ const sectionCopy: Record<Locale, {
     prev: string;
     next: string;
     openProject: (title: string) => string;
-    placeholders: { title: string; description: string; }[];
+    openPost: (title: string) => string;
 }> = {
     ko: {
         projectTitle: '프로젝트',
@@ -25,11 +26,7 @@ const sectionCopy: Record<Locale, {
         prev: '이전 프로젝트',
         next: '다음 프로젝트',
         openProject: (title) => `${title} 보기`,
-        placeholders: [
-            { title: '최신 블로그 글 1', description: '외부 블로그 이전 후 연결할 대표 글 자리입니다.' },
-            { title: '최신 블로그 글 2', description: '프로젝트 회고나 기술 정리를 연결할 수 있습니다.' },
-            { title: '최신 블로그 글 3', description: 'Flutter 관련 글을 우선 노출하는 용도로 사용할 수 있습니다.' },
-        ],
+        openPost: (title) => `${title} 읽기`,
     },
     en: {
         projectTitle: 'Projects',
@@ -39,11 +36,7 @@ const sectionCopy: Record<Locale, {
         prev: 'Previous project',
         next: 'Next project',
         openProject: (title) => `Open ${title}`,
-        placeholders: [
-            { title: 'Latest Post 1', description: 'A placeholder block for a featured article after the blog migration.' },
-            { title: 'Latest Post 2', description: 'You can link a project retrospective or technical write-up here.' },
-            { title: 'Latest Post 3', description: 'This slot can prioritize Flutter-focused articles later.' },
-        ],
+        openPost: (title) => `Read ${title}`,
     },
     jp: {
         projectTitle: 'プロジェクト',
@@ -53,11 +46,7 @@ const sectionCopy: Record<Locale, {
         prev: '前のプロジェクト',
         next: '次のプロジェクト',
         openProject: (title) => `${title}を見る`,
-        placeholders: [
-            { title: '最新ブログ記事 1', description: '外部ブログ移行後に接続する代表記事のプレースホルダーです。' },
-            { title: '最新ブログ記事 2', description: 'プロジェクト振り返りや技術記事をここにリンクできます。' },
-            { title: '最新ブログ記事 3', description: '今後はFlutter関連の記事を優先表示する想定です。' },
-        ],
+        openPost: (title) => `${title}を読む`,
     },
 };
 
@@ -84,9 +73,10 @@ const projectTranslations: Record<Locale, Record<string, { title: string; descri
 
 interface ProjectSectionProps {
     locale: Locale;
+    latestPosts: WordPressPost[];
 }
 
-export default function ProjectSection({ locale }: ProjectSectionProps) {
+export default function ProjectSection({ locale, latestPosts }: ProjectSectionProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const copy = sectionCopy[locale];
     const visibleProjects = projects
@@ -261,25 +251,27 @@ export default function ProjectSection({ locale }: ProjectSectionProps) {
 
                         <div className="card flex flex-1 flex-col p-6 md:p-7">
                             <div className="flex flex-1 flex-col gap-4">
-                                {copy.placeholders.map((item) => (
-                                    <a
-                                        key={item.title}
-                                        href="#"
-                                        onClick={(event) => event.preventDefault()}
-                                        className="block rounded-xl bg-background p-5 shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-transform hover:-translate-y-0.5"
-                                    >
-                                        <div className="flex items-start justify-between gap-4">
-                                            <div>
-                                                <p className="text-lg font-semibold text-foreground">
-                                                    {item.title}
-                                                </p>
-                                                <p className="mt-2 text-sm leading-6 text-foreground-secondary">
-                                                    {item.description}
-                                                </p>
+                                {latestPosts.map((post) => (
+                                        <a
+                                            key={post.id}
+                                            href={post.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block rounded-xl bg-background p-5 shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-transform hover:-translate-y-0.5"
+                                            aria-label={copy.openPost(post.title)}
+                                        >
+                                            <div className="flex items-start justify-between gap-4">
+                                                <div>
+                                                    <p className="text-lg font-semibold text-foreground">
+                                                        {post.title}
+                                                    </p>
+                                                    <p className="mt-2 text-sm leading-6 text-foreground-secondary">
+                                                        {post.excerpt}
+                                                    </p>
+                                                </div>
+                                                <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-foreground-muted" />
                                             </div>
-                                            <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-foreground-muted" />
-                                        </div>
-                                    </a>
+                                        </a>
                                 ))}
                             </div>
                         </div>

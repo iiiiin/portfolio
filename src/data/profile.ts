@@ -68,7 +68,7 @@ export const profile: ProfileData = {
     email: 'in24041210@gmail.com',
     github: 'https://github.com/iiiiin',
     linkedin: 'https://www.linkedin.com/in/in-kwon-16258b203/',
-    blog: 'https://iiiiin.github.io/',
+    blog: 'https://blog.inkwon.me/',
     skills: [
         {
             category: 'Frontend',

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PortfolioClient from '@/components/PortfolioClient';
 import { getSiteUrl } from "@/lib/site-url";
+import { getLatestWordPressPosts } from "@/lib/wordpress";
 
 const siteUrl = getSiteUrl();
 
@@ -33,6 +34,8 @@ export const metadata: Metadata = {
  * - 히어로 섹션
  * - Project 섹션
  */
-export default function Home() {
-  return <PortfolioClient />;
+export default async function Home() {
+  const latestPosts = await getLatestWordPressPosts();
+
+  return <PortfolioClient latestPosts={latestPosts} />;
 }

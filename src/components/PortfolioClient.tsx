@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import HeroSection from '@/components/HeroSection';
 import ProjectSection from '@/components/sections/ProjectSection';
 import ContactSection from '@/components/sections/ContactSection';
+import type { WordPressPost } from '@/lib/wordpress';
 
 export type Locale = 'ko' | 'en' | 'jp';
 
@@ -36,7 +37,11 @@ function getInitialLocale(): Locale {
     return 'ko';
 }
 
-export default function PortfolioClient() {
+interface PortfolioClientProps {
+    latestPosts: WordPressPost[];
+}
+
+export default function PortfolioClient({ latestPosts }: PortfolioClientProps) {
     const [locale, setLocale] = useState<Locale>(getInitialLocale);
 
     useEffect(() => {
@@ -47,7 +52,7 @@ export default function PortfolioClient() {
     return (
         <main className="min-h-screen bg-background">
             <HeroSection locale={locale} setLocale={setLocale} />
-            <ProjectSection locale={locale} />
+            <ProjectSection locale={locale} latestPosts={latestPosts} />
             <ContactSection locale={locale} />
 
             <footer className="border-t border-gray-200 py-8 text-center">
