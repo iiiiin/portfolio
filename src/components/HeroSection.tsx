@@ -5,8 +5,46 @@ import { ArrowRight, BookOpen, Github, Linkedin, Mail } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { profile } from '@/data/profile';
+import type { Locale } from '@/components/PortfolioClient';
 
-export default function HeroSection() {
+const copy: Record<Locale, {
+    role: string;
+    title: string;
+    subtitle: string;
+    cta: string;
+    social: { blog: string; email: string; };
+}> = {
+    ko: {
+        role: 'Software Engineer',
+        title: '안녕하세요, 권인입니다.',
+        subtitle: '필요한 것을 만들기 위해 배우고, 구현합니다.',
+        cta: '프로젝트 보기',
+        social: { blog: 'Blog', email: 'Email' },
+    },
+    en: {
+        role: 'Software Engineer',
+        title: 'Hi, I’m In Kwon.',
+        subtitle: 'I learn and build to make what is needed.',
+        cta: 'View Projects',
+        social: { blog: 'Blog', email: 'Email' },
+    },
+    jp: {
+        role: 'Software Engineer',
+        title: 'こんにちは、Kwon Inです。',
+        subtitle: '必要なものをつくるために学び、実装します。',
+        cta: 'プロジェクトを見る',
+        social: { blog: 'Blog', email: 'Email' },
+    },
+};
+
+interface HeroSectionProps {
+    locale: Locale;
+    setLocale: (locale: Locale) => void;
+}
+
+export default function HeroSection({ locale, setLocale }: HeroSectionProps) {
+    const heroCopy = copy[locale];
+
     const scrollToProjects = () => {
         window.scrollTo({
             top: window.innerHeight * 0.95,
@@ -22,9 +60,9 @@ export default function HeroSection() {
             ? { href: profile.linkedin, label: 'LinkedIn', icon: Linkedin }
             : null,
         profile.blog
-            ? { href: profile.blog, label: 'Blog', icon: BookOpen }
+            ? { href: profile.blog, label: heroCopy.social.blog, icon: BookOpen }
             : null,
-        { href: `mailto:${profile.email}`, label: 'Email', icon: Mail },
+        { href: `mailto:${profile.email}`, label: heroCopy.social.email, icon: Mail },
     ].filter((item): item is { href: string; label: string; icon: typeof Github } => item !== null);
 
     return (
@@ -50,6 +88,22 @@ export default function HeroSection() {
                             priority
                         />
                     </Link>
+
+                    <div className="flex items-center gap-2 text-sm font-medium text-foreground-secondary">
+                        {(['ko', 'en', 'jp'] as const).map((item) => (
+                            <button
+                                key={item}
+                                type="button"
+                                onClick={() => setLocale(item)}
+                                className={`rounded-full px-3 py-1.5 transition-colors ${locale === item
+                                    ? 'bg-black text-white'
+                                    : 'hover:bg-background-secondary hover:text-foreground'
+                                    }`}
+                            >
+                                {item.toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
                 </motion.header>
 
                 <h1 className="sr-only">
@@ -78,13 +132,13 @@ export default function HeroSection() {
 
                     <div className="max-w-3xl md:pt-8">
                         <p className="mb-3 text-sm font-medium uppercase tracking-[0.24em] text-foreground-muted">
-                            Software Engineer
+                            {heroCopy.role}
                         </p>
                         <h2 className="text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-6xl">
-                            안녕하세요, 권인입니다.
+                            {heroCopy.title}
                         </h2>
                         <p className="mt-8 max-w-2xl text-xl leading-relaxed text-foreground-secondary md:text-3xl md:leading-snug">
-                            필요한 것을 만들기 위해 배우고, 구현합니다.
+                            {heroCopy.subtitle}
                         </p>
 
                         <div className="mt-10 flex flex-wrap gap-3">
@@ -95,7 +149,7 @@ export default function HeroSection() {
                                 whileHover={{ y: -1 }}
                                 whileTap={{ scale: 0.98 }}
                             >
-                                프로젝트 보기
+                                {heroCopy.cta}
                                 <ArrowRight className="h-4 w-4" />
                             </motion.button>
                         </div>

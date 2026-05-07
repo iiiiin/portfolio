@@ -4,25 +4,91 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Github, Store } from 'lucide-react';
 import Image from 'next/image';
+import type { Locale } from '@/components/PortfolioClient';
 import { projects } from '@/data/profile';
 
-const blogPlaceholders = [
-    {
-        title: '최신 블로그 글 1',
-        description: '외부 블로그 이전 후 연결할 대표 글 자리입니다.',
+const sectionCopy: Record<Locale, {
+    projectTitle: string;
+    blogTitle: string;
+    app: string;
+    extension: string;
+    prev: string;
+    next: string;
+    openProject: (title: string) => string;
+    placeholders: { title: string; description: string; }[];
+}> = {
+    ko: {
+        projectTitle: '프로젝트',
+        blogTitle: '블로그 최신 글',
+        app: 'App',
+        extension: 'Chrome Extension',
+        prev: '이전 프로젝트',
+        next: '다음 프로젝트',
+        openProject: (title) => `${title} 보기`,
+        placeholders: [
+            { title: '최신 블로그 글 1', description: '외부 블로그 이전 후 연결할 대표 글 자리입니다.' },
+            { title: '최신 블로그 글 2', description: '프로젝트 회고나 기술 정리를 연결할 수 있습니다.' },
+            { title: '최신 블로그 글 3', description: 'Flutter 관련 글을 우선 노출하는 용도로 사용할 수 있습니다.' },
+        ],
     },
-    {
-        title: '최신 블로그 글 2',
-        description: '프로젝트 회고나 기술 정리를 연결할 수 있습니다.',
+    en: {
+        projectTitle: 'Projects',
+        blogTitle: 'Latest Posts',
+        app: 'App',
+        extension: 'Chrome Extension',
+        prev: 'Previous project',
+        next: 'Next project',
+        openProject: (title) => `Open ${title}`,
+        placeholders: [
+            { title: 'Latest Post 1', description: 'A placeholder block for a featured article after the blog migration.' },
+            { title: 'Latest Post 2', description: 'You can link a project retrospective or technical write-up here.' },
+            { title: 'Latest Post 3', description: 'This slot can prioritize Flutter-focused articles later.' },
+        ],
     },
-    {
-        title: '최신 블로그 글 3',
-        description: 'Flutter 관련 글을 우선 노출하는 용도로 사용할 수 있습니다.',
+    jp: {
+        projectTitle: 'プロジェクト',
+        blogTitle: '最新ブログ記事',
+        app: 'App',
+        extension: 'Chrome Extension',
+        prev: '前のプロジェクト',
+        next: '次のプロジェクト',
+        openProject: (title) => `${title}を見る`,
+        placeholders: [
+            { title: '最新ブログ記事 1', description: '外部ブログ移行後に接続する代表記事のプレースホルダーです。' },
+            { title: '最新ブログ記事 2', description: 'プロジェクト振り返りや技術記事をここにリンクできます。' },
+            { title: '最新ブログ記事 3', description: '今後はFlutter関連の記事を優先表示する想定です。' },
+        ],
     },
-];
+};
 
-export default function ProjectSection() {
+const projectTranslations: Record<Locale, Record<string, { title: string; description: string }>> = {
+    ko: {
+        pawprint: { title: 'PAWPRINT', description: '반려동물 건강 분석/활동량 관리 서비스' },
+        'turtleneck-reminder': { title: '거북목 알리미', description: '브라우저 사용 시간 기반 자세 교정 리마인더 크롬 확장프로그램' },
+        'lunch-hourglass': { title: '배꼽시계', description: '출근부터 점심까지 시간을 픽셀 버거 레이어로 시각화하는 크롬 확장프로그램' },
+        'cocos-forest': { title: '코코의 숲', description: '소비내역 기반 탄소배출량 추적 앱' },
+    },
+    en: {
+        pawprint: { title: 'PAWPRINT', description: 'A pet health analytics and activity tracking service.' },
+        'turtleneck-reminder': { title: 'Turtleneck Reminder', description: 'A Chrome extension that reminds users to correct posture based on browser usage time.' },
+        'lunch-hourglass': { title: 'Lunch Hourglass', description: 'A Chrome extension that visualizes the time until lunch with a pixel burger overlay.' },
+        'cocos-forest': { title: 'Coco Forest', description: 'An app that tracks carbon emissions based on spending history.' },
+    },
+    jp: {
+        pawprint: { title: 'PAWPRINT', description: 'ペットの健康分析と活動量管理を行うサービスです。' },
+        'turtleneck-reminder': { title: '猫背リマインダー', description: 'ブラウザ利用時間に応じて姿勢改善を促すChrome拡張です。' },
+        'lunch-hourglass': { title: 'ランチ時計', description: '昼休みまでの時間をピクセルバーガーで可視化するChrome拡張です。' },
+        'cocos-forest': { title: 'ココの森', description: '支出履歴をもとに炭素排出量を追跡するアプリです。' },
+    },
+};
+
+interface ProjectSectionProps {
+    locale: Locale;
+}
+
+export default function ProjectSection({ locale }: ProjectSectionProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const copy = sectionCopy[locale];
     const visibleProjects = projects
         .filter((project) => project.id !== 'review')
         .sort((a, b) => {
@@ -32,6 +98,10 @@ export default function ProjectSection() {
             return aOrder - bOrder;
         });
     const currentProject = visibleProjects[currentIndex];
+    const translatedProject = projectTranslations[locale][currentProject.id] ?? {
+        title: currentProject.title,
+        description: currentProject.description,
+    };
 
     const handlePrev = () => {
         setCurrentIndex((prev) => (prev === 0 ? visibleProjects.length - 1 : prev - 1));
@@ -54,7 +124,7 @@ export default function ProjectSection() {
                             transition={{ duration: 0.45 }}
                         >
                             <h2 className="text-3xl font-semibold tracking-[-0.04em] text-foreground md:text-4xl">
-                                프로젝트
+                                {copy.projectTitle}
                             </h2>
                         </motion.div>
 
@@ -69,7 +139,7 @@ export default function ProjectSection() {
                             <div className="mb-6 flex items-center justify-between gap-4">
                                 <div className="flex items-center gap-3">
                                     <span className="px-1 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-foreground-muted">
-                                        {currentProject.displayType === 'app' ? 'App' : 'Chrome Extension'}
+                                        {currentProject.displayType === 'app' ? copy.app : copy.extension}
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -77,7 +147,7 @@ export default function ProjectSection() {
                                         type="button"
                                         onClick={handlePrev}
                                         className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-black hover:text-white"
-                                        aria-label="이전 프로젝트"
+                                        aria-label={copy.prev}
                                     >
                                         <ArrowLeft className="h-4 w-4" />
                                     </button>
@@ -85,7 +155,7 @@ export default function ProjectSection() {
                                         type="button"
                                         onClick={handleNext}
                                         className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-black hover:text-white"
-                                        aria-label="다음 프로젝트"
+                                        aria-label={copy.next}
                                     >
                                         <ArrowRight className="h-4 w-4" />
                                     </button>
@@ -109,10 +179,10 @@ export default function ProjectSection() {
 
                                 <div className="flex flex-1 flex-col">
                                     <h3 className="text-2xl font-semibold text-foreground md:text-3xl">
-                                        {currentProject.title}
+                                        {translatedProject.title}
                                     </h3>
                                     <p className="mt-3 text-base leading-7 text-foreground-secondary">
-                                        {currentProject.description}
+                                        {translatedProject.description}
                                     </p>
 
                                     <div className="mt-5 flex flex-wrap gap-2">
@@ -166,7 +236,7 @@ export default function ProjectSection() {
                                                         ? 'w-8 bg-black'
                                                         : 'w-2.5 bg-black/20 hover:bg-black/40'
                                                         }`}
-                                                    aria-label={`${project.title} 보기`}
+                                                    aria-label={copy.openProject(projectTranslations[locale][project.id]?.title ?? project.title)}
                                                 />
                                             ))}
                                         </div>
@@ -185,13 +255,13 @@ export default function ProjectSection() {
                     >
                         <div className="mb-8 text-center">
                             <h3 className="text-3xl font-semibold tracking-[-0.04em] text-foreground md:text-4xl">
-                                블로그 최신 글
+                                {copy.blogTitle}
                             </h3>
                         </div>
 
                         <div className="card flex flex-1 flex-col p-6 md:p-7">
                             <div className="flex flex-1 flex-col gap-4">
-                                {blogPlaceholders.map((item) => (
+                                {copy.placeholders.map((item) => (
                                     <a
                                         key={item.title}
                                         href="#"

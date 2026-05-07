@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import HeroSection from '@/components/HeroSection';
-import ProjectSection from '@/components/sections/ProjectSection';
-import ContactSection from '@/components/sections/ContactSection';
+import PortfolioClient from '@/components/PortfolioClient';
 import { getSiteUrl } from "@/lib/site-url";
 
 const siteUrl = getSiteUrl();
@@ -36,23 +34,5 @@ export const metadata: Metadata = {
  * - Project 섹션
  */
 export default function Home() {
-  return (
-    <main className="min-h-screen bg-background">
-      {/* 히어로 섹션 */}
-      <HeroSection />
-
-      {/* Project 섹션 */}
-      <ProjectSection />
-
-      {/* Contact 섹션 */}
-      <ContactSection />
-
-      {/* 푸터 */}
-      <footer className="py-8 text-center border-t border-gray-200">
-        <p className="text-sm text-foreground-muted">
-          © 2026. Kwon In. All rights reserved.
-        </p>
-      </footer>
-    </main>
-  );
+  return <PortfolioClient />;
 }
