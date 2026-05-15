@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import ProjectSection from '@/components/sections/ProjectSection';
 import ContactSection from '@/components/sections/ContactSection';
@@ -51,7 +52,12 @@ export default function PortfolioClient({ latestPosts }: PortfolioClientProps) {
 
     return (
         <main className="min-h-screen bg-background">
-            <HeroSection locale={locale} setLocale={setLocale} />
+            <section className="px-4 pt-2">
+                <div className="mx-auto flex min-h-[82vh] w-full max-w-6xl flex-col">
+                    <Header locale={locale} setLocale={setLocale} />
+                    <HeroSection locale={locale} />
+                </div>
+            </section>
             <ProjectSection locale={locale} latestPosts={latestPosts} />
             <ContactSection locale={locale} />
 
