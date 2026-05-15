@@ -8,11 +8,7 @@ export type Locale = 'ko' | 'en' | 'jp';
 
 const STORAGE_KEY = 'portfolio-locale';
 
-function getInitialLocale(): Locale {
-    if (typeof window === 'undefined') {
-        return 'ko';
-    }
-
+function getStoredLocale(): Locale {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored === 'ko' || stored === 'en' || stored === 'jp') {
         return stored;
@@ -30,12 +26,26 @@ function getInitialLocale(): Locale {
 }
 
 export default function PortfolioClient() {
-    const [locale, setLocale] = useState<Locale>(getInitialLocale);
+    const [locale, setLocale] = useState<Locale>('ko');
+    const [isLocaleReady, setIsLocaleReady] = useState(false);
 
     useEffect(() => {
+        const timeoutId = window.setTimeout(() => {
+            setLocale(getStoredLocale());
+            setIsLocaleReady(true);
+        }, 0);
+
+        return () => window.clearTimeout(timeoutId);
+    }, []);
+
+    useEffect(() => {
+        if (!isLocaleReady) {
+            return;
+        }
+
         window.localStorage.setItem(STORAGE_KEY, locale);
         document.documentElement.lang = locale === 'jp' ? 'ja' : locale;
-    }, [locale]);
+    }, [isLocaleReady, locale]);
 
     return (
         <main className="h-dvh overflow-hidden bg-background">

@@ -39,7 +39,7 @@ export const projects: Project[] = [
         displayType: 'app',
         title: 'PAWPRINT',
         description: '반려동물 건강 분석/활동량 관리 서비스',
-        image: '/pawprint_1_bg.png',
+        image: '/pawprint_noframe.png',
         tags: ['Flutter', 'Riverpod', 'Firebase', 'Sentry', 'Docker'],
         links: {
             github: '',
@@ -85,7 +85,7 @@ export const projects: Project[] = [
         displayType: 'app',
         title: '코코의 숲',
         description: '소비내역 기반 탄소배출량 추적 앱',
-        image: '/cocosforest_1.png',
+        image: '/cocosforest_noframe_cut.png',
         tags: ['React Native', 'Expo', 'Zustand', 'Axios', 'TanStack Query', 'OCR'],
         links: {
             github: 'https://github.com/iiiiin/cocos-forest.git',
