@@ -3,19 +3,10 @@
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
-import ProjectSection from '@/components/sections/ProjectSection';
-import ContactSection from '@/components/sections/ContactSection';
-import type { WordPressPost } from '@/lib/wordpress';
 
 export type Locale = 'ko' | 'en' | 'jp';
 
 const STORAGE_KEY = 'portfolio-locale';
-
-const footerCopy: Record<Locale, string> = {
-    ko: '© 2026. Kwon In. All rights reserved.',
-    en: '© 2026. Kwon In. All rights reserved.',
-    jp: '© 2026. Kwon In. All rights reserved.',
-};
 
 function getInitialLocale(): Locale {
     if (typeof window === 'undefined') {
@@ -38,11 +29,7 @@ function getInitialLocale(): Locale {
     return 'ko';
 }
 
-interface PortfolioClientProps {
-    latestPosts: WordPressPost[];
-}
-
-export default function PortfolioClient({ latestPosts }: PortfolioClientProps) {
+export default function PortfolioClient() {
     const [locale, setLocale] = useState<Locale>(getInitialLocale);
 
     useEffect(() => {
@@ -51,21 +38,13 @@ export default function PortfolioClient({ latestPosts }: PortfolioClientProps) {
     }, [locale]);
 
     return (
-        <main className="min-h-screen bg-background">
-            <section className="px-4 pt-2">
-                <div className="mx-auto flex min-h-[82vh] w-full max-w-6xl flex-col">
+        <main className="h-dvh overflow-hidden bg-background">
+            <section className="h-full px-4 pt-2">
+                <div className="mx-auto flex h-full w-full max-w-6xl flex-col">
                     <Header locale={locale} setLocale={setLocale} />
                     <HeroSection locale={locale} />
                 </div>
             </section>
-            <ProjectSection locale={locale} latestPosts={latestPosts} />
-            <ContactSection locale={locale} />
-
-            <footer className="border-t border-gray-200 py-8 text-center">
-                <p className="text-sm text-foreground-muted">
-                    {footerCopy[locale]}
-                </p>
-            </footer>
         </main>
     );
 }
