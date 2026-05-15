@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Github, Store } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Github, Store } from 'lucide-react';
 import Image from 'next/image';
 import { projects } from '@/data/profile';
 import type { Locale } from '@/components/PortfolioClient';
@@ -108,7 +108,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                 권인 포트폴리오
             </h1>
             <motion.div
-                className="flex min-h-0 flex-1 flex-col py-6 md:py-8"
+                className="relative flex min-h-0 flex-1 flex-col py-6 md:py-8"
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
@@ -125,25 +125,24 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                             {heroCopy.subtitle}
                         </p>
                     </div>
-                    <div className="flex shrink-0 items-center gap-2">
-                        <button
-                            type="button"
-                            onClick={handlePrev}
-                            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground-secondary transition-colors hover:bg-black hover:text-white"
-                            aria-label={heroCopy.prev}
-                        >
-                            <ArrowLeft className="h-4 w-4" />
-                        </button>
-                        <button
-                            type="button"
-                            onClick={handleNext}
-                            className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-black text-white transition-colors hover:bg-neutral-800"
-                            aria-label={heroCopy.next}
-                        >
-                            <ArrowRight className="h-4 w-4" />
-                        </button>
-                    </div>
                 </div>
+
+                <button
+                    type="button"
+                    onClick={handlePrev}
+                    className="absolute left-0 top-1/2 z-10 inline-flex h-12 w-12 -translate-x-3 items-center justify-center text-foreground-secondary transition-colors hover:text-foreground md:-translate-x-16"
+                    aria-label={heroCopy.prev}
+                >
+                    <ChevronLeft className="h-7 w-7" />
+                </button>
+                <button
+                    type="button"
+                    onClick={handleNext}
+                    className="absolute right-0 top-1/2 z-10 inline-flex h-12 w-12 translate-x-3 items-center justify-center text-foreground-secondary transition-colors hover:text-foreground md:translate-x-16"
+                    aria-label={heroCopy.next}
+                >
+                    <ChevronRight className="h-7 w-7" />
+                </button>
 
                 <div className="mt-5 min-h-0 flex-1 overflow-hidden md:mt-8">
                     <div className="grid h-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
