@@ -77,26 +77,45 @@ interface HeroSectionProps {
 
 export default function HeroSection({ locale }: HeroSectionProps) {
     const heroCopy = copy[locale];
-    const [activeIndex, setActiveIndex] = useState(0);
     const orderedProjects = projects;
+    const projectCount = orderedProjects.length;
+    const [slideIndex, setSlideIndex] = useState(projectCount);
+    const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);
+    const carouselProjects = [
+        ...orderedProjects,
+        ...orderedProjects,
+        ...orderedProjects,
+    ];
 
     const handlePrev = () => {
-        setActiveIndex((current) => (
-            current === 0 ? orderedProjects.length - 1 : current - 1
-        ));
+        setIsTransitionEnabled(true);
+        setSlideIndex((current) => current - 1);
     };
 
     const handleNext = () => {
-        setActiveIndex((current) => (
-            current === orderedProjects.length - 1 ? 0 : current + 1
-        ));
+        setIsTransitionEnabled(true);
+        setSlideIndex((current) => current + 1);
     };
 
-    const visibleProjects = Array.from({ length: 3 }, (_, offset) => {
-        const index = (activeIndex + offset) % orderedProjects.length;
+    const handleTrackTransitionEnd = () => {
+        if (slideIndex >= projectCount * 2) {
+            setIsTransitionEnabled(false);
+            setSlideIndex(projectCount);
 
-        return orderedProjects[index];
-    });
+            requestAnimationFrame(() => {
+                setIsTransitionEnabled(true);
+            });
+        }
+
+        if (slideIndex < projectCount) {
+            setIsTransitionEnabled(false);
+            setSlideIndex(projectCount * 2 - 1);
+
+            requestAnimationFrame(() => {
+                setIsTransitionEnabled(true);
+            });
+        }
+    };
 
     return (
         <>
@@ -137,86 +156,87 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                     <ChevronRight className="h-7 w-7" />
                 </button>
 
-                <div className="mt-5 min-h-0 flex-1 overflow-hidden md:mt-8">
-                    <div className="grid h-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {visibleProjects.map((project, visibleIndex) => {
+                <div className="project-carousel mt-5 min-h-0 flex-1 overflow-hidden md:mt-8">
+                    <div
+                        className={`flex h-full ${isTransitionEnabled ? 'transition-transform duration-500 ease-out' : ''}`}
+                        style={{
+                            transform: `translateX(calc(${slideIndex} * -100% / var(--project-visible-count)))`,
+                        }}
+                        onTransitionEnd={handleTrackTransitionEnd}
+                    >
+                        {carouselProjects.map((project, projectIndex) => {
                             const text = projectCopy[locale][project.id] ?? {
                                 title: project.title,
                                 description: project.description,
                             };
                             const frameType = frameByType[project.displayType ?? 'web'];
+                            const originalIndex = projectIndex % projectCount;
 
                             return (
-                                <motion.article
-                                    key={`${activeIndex}-${project.id}`}
-                                    className={`min-h-0 flex-col justify-between rounded-lg border border-border bg-background-secondary p-4 ${visibleIndex === 0
-                                        ? 'flex'
-                                        : visibleIndex === 1
-                                            ? 'hidden sm:flex'
-                                            : 'hidden lg:flex'
-                                        }`}
-                                    initial={{ opacity: 0, x: 24 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.35, delay: visibleIndex * 0.04 }}
+                                <article
+                                    key={`${project.id}-${projectIndex}`}
+                                    className="project-carousel-item min-h-0 shrink-0"
                                 >
-                                    <div className="min-h-0 flex-1">
-                                        <div className={`device-frame device-frame-${frameType}`}>
-                                            <div className="device-frame-screen">
-                                                {/* TODO: Replace with final project screenshot */}
-                                                {project.image ? (
-                                                    <Image
-                                                        src={project.image}
-                                                        alt={`${project.title} preview placeholder`}
-                                                        width={520}
-                                                        height={680}
-                                                        className="h-full w-full object-cover"
-                                                        priority={visibleIndex === 0}
-                                                    />
-                                                ) : null}
+                                    <div className="flex h-full min-h-0 flex-col justify-between rounded-lg border border-border bg-background-secondary p-4">
+                                        <div className="min-h-0 flex-1">
+                                            <div className={`device-frame device-frame-${frameType}`}>
+                                                <div className="device-frame-screen">
+                                                    {/* TODO: Replace with final project screenshot */}
+                                                    {project.image ? (
+                                                        <Image
+                                                            src={project.image}
+                                                            alt={`${project.title} preview placeholder`}
+                                                            width={520}
+                                                            height={680}
+                                                            className="h-full w-full object-cover"
+                                                            priority={originalIndex === 0}
+                                                        />
+                                                    ) : null}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="mt-4 shrink-0">
-                                        <p className="text-xs font-medium uppercase tracking-[0.16em] text-foreground-muted">
-                                            {project.displayType === 'chrome-ext' ? 'Extension' : project.displayType ?? 'Web'}
-                                        </p>
-                                        <div className="mt-2 flex items-start justify-between gap-3">
-                                            <div>
-                                                <h3 className="text-xl font-semibold text-foreground">
-                                                    {text.title}
-                                                </h3>
-                                                <p className="mt-1 line-clamp-2 text-sm leading-6 text-foreground-secondary">
-                                                    {text.description}
-                                                </p>
-                                            </div>
-                                            <div className="flex shrink-0 gap-1">
-                                                {project.links?.github ? (
-                                                    <a
-                                                        href={project.links.github}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-black hover:text-white"
-                                                        aria-label={heroCopy.openSource}
-                                                    >
-                                                        <Github className="h-4 w-4" />
-                                                    </a>
-                                                ) : null}
-                                                {project.links?.store ? (
-                                                    <a
-                                                        href={project.links.store}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-black hover:text-white"
-                                                        aria-label={heroCopy.openStore}
-                                                    >
-                                                        <Store className="h-4 w-4" />
-                                                    </a>
-                                                ) : null}
+                                        <div className="mt-4 shrink-0">
+                                            <p className="text-xs font-medium uppercase tracking-[0.16em] text-foreground-muted">
+                                                {project.displayType === 'chrome-ext' ? 'Extension' : project.displayType ?? 'Web'}
+                                            </p>
+                                            <div className="mt-2 flex items-start justify-between gap-3">
+                                                <div>
+                                                    <h3 className="text-xl font-semibold text-foreground">
+                                                        {text.title}
+                                                    </h3>
+                                                    <p className="mt-1 line-clamp-2 text-sm leading-6 text-foreground-secondary">
+                                                        {text.description}
+                                                    </p>
+                                                </div>
+                                                <div className="flex shrink-0 gap-1">
+                                                    {project.links?.github ? (
+                                                        <a
+                                                            href={project.links.github}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-black hover:text-white"
+                                                            aria-label={heroCopy.openSource}
+                                                        >
+                                                            <Github className="h-4 w-4" />
+                                                        </a>
+                                                    ) : null}
+                                                    {project.links?.store ? (
+                                                        <a
+                                                            href={project.links.store}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-black hover:text-white"
+                                                            aria-label={heroCopy.openStore}
+                                                        >
+                                                            <Store className="h-4 w-4" />
+                                                        </a>
+                                                    ) : null}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </motion.article>
+                                </article>
                             );
                         })}
                     </div>

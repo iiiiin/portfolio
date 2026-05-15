@@ -235,6 +235,31 @@ body {
   border-radius: 9px;
 }
 
+.project-carousel {
+  --project-visible-count: 1;
+}
+
+.project-carousel-item {
+  width: calc(100% / var(--project-visible-count));
+  padding-right: 1rem;
+}
+
+.project-carousel-item:last-child {
+  padding-right: 0;
+}
+
+@media (min-width: 640px) {
+  .project-carousel {
+    --project-visible-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .project-carousel {
+    --project-visible-count: 3;
+  }
+}
+
 @media (max-width: 768px) {
   .skill-logo {
     width: 40px;
