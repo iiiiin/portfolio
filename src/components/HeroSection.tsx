@@ -143,6 +143,8 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                                 >
                                     <div className="project-mockup-stage">
                                         <div className={`device-frame device-frame-${frameType}`}>
+                                            <span className="device-frame-control device-frame-control-volume" aria-hidden="true" />
+                                            <span className="device-frame-control device-frame-control-hold" aria-hidden="true" />
                                             <div className="device-frame-screen">
                                                 {/* TODO: Replace with final project screenshot */}
                                                 {project.image ? (
