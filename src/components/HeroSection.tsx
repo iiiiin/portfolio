@@ -8,7 +8,6 @@ import { projects } from '@/data/profile';
 import type { Locale } from '@/components/PortfolioClient';
 
 const copy: Record<Locale, {
-    role: string;
     title: string;
     subtitle: string;
     prev: string;
@@ -17,27 +16,24 @@ const copy: Record<Locale, {
     openStore: string;
 }> = {
     ko: {
-        role: 'Frontend Portfolio',
-        title: '프로젝트를 실제 화면 중심으로 보여줍니다.',
-        subtitle: '앱, 웹, 확장프로그램 작업물을 디바이스 프레임 안에서 넘겨보는 랜딩 페이지입니다.',
+        title: '권인입니다.',
+        subtitle: '필요한 것을 만들기 위해 배우고, 직접 구현합니다.',
         prev: '이전 프로젝트',
         next: '다음 프로젝트',
         openSource: 'GitHub 열기',
         openStore: '스토어 열기',
     },
     en: {
-        role: 'Frontend Portfolio',
-        title: 'Project work, framed around real screens.',
-        subtitle: 'A no-scroll landing page for app, web, and extension projects inside device frames.',
+        title: 'I’m In Kwon.',
+        subtitle: 'I learn and build directly to make what is needed.',
         prev: 'Previous project',
         next: 'Next project',
         openSource: 'Open GitHub',
         openStore: 'Open store',
     },
     jp: {
-        role: 'Frontend Portfolio',
-        title: '実際の画面を中心にプロジェクトを見せます。',
-        subtitle: 'アプリ、Web、拡張機能の制作物をデバイスフレーム内で切り替えるランディングページです。',
+        title: 'Kwon Inです。',
+        subtitle: '必要なものをつくるために学び、直接実装します。',
         prev: '前のプロジェクト',
         next: '次のプロジェクト',
         openSource: 'GitHubを開く',
@@ -115,9 +111,6 @@ export default function HeroSection({ locale }: HeroSectionProps) {
             >
                 <div className="flex shrink-0 flex-col gap-4 md:flex-row md:items-end md:justify-between">
                     <div className="max-w-3xl">
-                        <p className="mb-2 text-xs font-medium uppercase tracking-[0.24em] text-foreground-muted md:text-sm">
-                            {heroCopy.role}
-                        </p>
                         <h2 className="text-3xl font-semibold leading-tight text-foreground md:text-5xl">
                             {heroCopy.title}
                         </h2>
