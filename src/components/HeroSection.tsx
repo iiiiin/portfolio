@@ -1,10 +1,12 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
-import { projects } from '@/data/profile';
+import { projects, type Project } from '@/data/profile';
 import type { Locale } from '@/types/locale';
+import ProjectDetail from '@/components/ProjectDetail';
 
 const copy: Record<Locale, { title: string; subtitle: string }> = {
     ko: {
@@ -34,6 +36,18 @@ interface HeroSectionProps {
 export default function HeroSection({ locale }: HeroSectionProps) {
     const heroCopy = copy[locale];
     const visibleProjects = projects.filter(p => p.visible !== false);
+    const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+    const [exitingId, setExitingId] = useState<string | null>(null);
+
+    const handleSelect = (project: Project) => {
+        setExitingId(project.id);
+        setSelectedProject(project);
+    };
+
+    const handleClose = () => {
+        setSelectedProject(null);
+        setExitingId(null);
+    };
 
     return (
         <>
@@ -55,51 +69,99 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                     </div>
                 </div>
 
-                <div className="project-carousel mt-5 min-h-0 flex-1 overflow-hidden md:mt-8">
+                <div className="project-carousel relative mt-5 min-h-0 flex-1 overflow-hidden md:mt-8">
                     <div className="flex h-full">
-                        {visibleProjects.map((project, index) => {
-                            const frameType = frameByType[project.displayType ?? 'web'];
 
-                            return (
-                                <motion.article
-                                    key={project.id}
-                                    className="project-carousel-item group flex min-h-0 shrink-0 cursor-pointer flex-col"
-                                    whileHover={{ y: -8 }}
-                                    transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-                                >
-                                    <div className="project-mockup-stage">
-                                        <div className={`device-frame device-frame-${frameType}`}>
-                                            <span className="device-frame-control device-frame-control-volume" aria-hidden="true" />
-                                            <span className="device-frame-control device-frame-control-hold" aria-hidden="true" />
-                                            <div className="device-frame-screen">
-                                                {project.image ? (
-                                                    <Image
-                                                        src={project.image}
-                                                        alt={`${project.title[locale]} preview`}
-                                                        width={520}
-                                                        height={680}
-                                                        className="h-full w-full object-cover"
-                                                        priority={index === 0}
-                                                    />
-                                                ) : null}
+                        <AnimatePresence mode="popLayout" initial={false}>
+                            {visibleProjects
+                                .filter(p => !selectedProject || p.id === selectedProject.id)
+                                .map((project, index) => {
+                                    const isSelected = selectedProject?.id === project.id;
+                                    const frameType = frameByType[project.displayType ?? 'web'];
+
+                                    return (
+                                        <motion.article
+                                            key={isSelected ? `${project.id}-detail` : project.id}
+                                            className={`group flex min-h-0 flex-col ${
+                                                isSelected
+                                                    ? 'w-1/3 shrink-0 pr-4'
+                                                    : 'project-carousel-item shrink-0 cursor-pointer'
+                                            }`}
+                                            initial={isSelected ? { opacity: 0, y: 20 } : { opacity: 0 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={
+                                                isSelected
+                                                    ? { opacity: 0, scale: 0.98, transition: { duration: 0.15 } }
+                                                    : project.id === exitingId
+                                                    ? { opacity: 0, y: 30, transition: { duration: 0.2 } }
+                                                    : { opacity: 0, scale: 0.95, transition: { duration: 0.15 } }
+                                            }
+                                            transition={isSelected ? { duration: 0.3, delay: 0.12 } : { duration: 0.2 }}
+                                            onClick={!isSelected ? () => handleSelect(project) : undefined}
+                                            whileHover={!isSelected && !selectedProject ? { y: -8 } : undefined}
+                                        >
+                                            <div
+                                                className="project-mockup-stage"
+                                                style={isSelected ? { alignItems: 'flex-start', paddingTop: '1.5rem' } : undefined}
+                                            >
+                                                <div className="flex flex-col items-center gap-3 pb-12">
+                                                    <div className={`device-frame device-frame-${frameType}`}>
+                                                        <span className="device-frame-control device-frame-control-volume" aria-hidden="true" />
+                                                        <span className="device-frame-control device-frame-control-hold" aria-hidden="true" />
+                                                        <div className="device-frame-screen">
+                                                            {project.image ? (
+                                                                <Image
+                                                                    src={project.image}
+                                                                    alt={`${project.title[locale]} preview`}
+                                                                    width={520}
+                                                                    height={680}
+                                                                    className="h-full w-full object-cover"
+                                                                    priority={index === 0}
+                                                                />
+                                                            ) : null}
+                                                            {!isSelected && (
+                                                                <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 backdrop-blur-[2px] transition-opacity duration-200 group-hover:opacity-100">
+                                                                    <ArrowUpRight className="h-7 w-7 text-white drop-shadow" />
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    {!isSelected && (
+                                                        <div className="text-center">
+                                                            <p className="text-base font-semibold text-foreground">
+                                                                {project.title[locale]}
+                                                            </p>
+                                                            <p className="mt-0.5 text-sm leading-relaxed text-foreground-secondary">
+                                                                {project.description[locale]}
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </motion.article>
+                                    );
+                                })}
+                        </AnimatePresence>
 
-                                    <div className="mt-2 px-1 text-center">
-                                        <div className="flex items-center justify-center gap-0.5">
-                                            <span className="text-sm font-semibold text-foreground">
-                                                {project.title[locale]}
-                                            </span>
-                                            <ArrowUpRight className="h-3.5 w-3.5 translate-y-px text-foreground-secondary opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-                                        </div>
-                                        <p className="mt-0.5 text-xs leading-relaxed text-foreground-secondary">
-                                            {project.description[locale]}
-                                        </p>
-                                    </div>
-                                </motion.article>
-                            );
-                        })}
+                        <AnimatePresence initial={false}>
+                            {selectedProject && (
+                                <motion.div
+                                    key="detail-panel"
+                                    className="min-w-0 flex-1"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: 20, transition: { duration: 0.15 } }}
+                                    transition={{ delay: 0.22, duration: 0.25 }}
+                                >
+                                    <ProjectDetail
+                                        project={selectedProject}
+                                        locale={locale}
+                                        onClose={handleClose}
+                                    />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
                     </div>
                 </div>
             </motion.div>
