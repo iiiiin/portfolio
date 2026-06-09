@@ -45,7 +45,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ locale }: HeroSectionProps) {
     const heroCopy = copy[locale];
-    const orderedProjects = projects;
+    const orderedProjects = projects.filter(p => p.visible !== false);
     const projectCount = orderedProjects.length;
     const [slideIndex, setSlideIndex] = useState(projectCount * 2 - 1);
     const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);

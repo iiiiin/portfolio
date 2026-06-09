@@ -10,6 +10,7 @@ export interface ProfileData {
 
 export interface Project {
     id: string;
+    visible?: boolean;
     displayType?: 'web' | 'chrome-ext' | 'app';
     title: string;
     description: string;
@@ -36,6 +37,7 @@ export const profile: ProfileData = {
 export const projects: Project[] = [
     {
         id: 'pawprint',
+        visible: true,
         displayType: 'app',
         title: 'PAWPRINT',
         description: '반려동물 건강 분석/활동량 관리 서비스',
@@ -47,6 +49,7 @@ export const projects: Project[] = [
     },
     {
         id: 'review',
+        visible: false,
         displayType: 'web',
         title: 'RE:VIEW',
         description: 'AI 면접 코칭 피드백 웹 서비스',
@@ -58,6 +61,7 @@ export const projects: Project[] = [
     },
     {
         id: 'turtleneck-reminder',
+        visible: true,
         displayType: 'chrome-ext',
         title: '거북목 알리미',
         description: '브라우저 사용 시간 기반 자세 교정 리마인더 크롬 확장프로그램',
@@ -70,6 +74,7 @@ export const projects: Project[] = [
     },
     {
         id: 'lunch-hourglass',
+        visible: false,
         displayType: 'chrome-ext',
         title: '배꼽시계',
         description: '출근부터 점심까지 시간을 픽셀 버거 레이어로 시각화하는 크롬 확장프로그램',
@@ -82,6 +87,7 @@ export const projects: Project[] = [
     },
     {
         id: 'cocos-forest',
+        visible: true,
         displayType: 'app',
         title: '코코의 숲',
         description: '소비내역 기반 탄소배출량 추적 앱',
