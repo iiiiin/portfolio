@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { BookOpen, ChevronDown, Github, Linkedin, Mail } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Locale } from '@/components/PortfolioClient';
+import type { Locale } from '@/types/locale';
 import { profile } from '@/data/profile';
 
 const locales = ['ko', 'en', 'jp'] as const;

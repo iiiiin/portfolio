@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
+import type { Locale } from '@/types/locale';
 
-export type Locale = 'ko' | 'en' | 'jp';
+export type { Locale };
 
 const STORAGE_KEY = 'portfolio-locale';
 

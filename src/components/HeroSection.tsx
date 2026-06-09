@@ -1,14 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import { projects } from '@/data/profile';
-import type { Locale } from '@/components/PortfolioClient';
+import type { Locale } from '@/types/locale';
 
-const copy: Record<Locale, {
-    title: string;
-    subtitle: string;
-}> = {
+const copy: Record<Locale, { title: string; subtitle: string }> = {
     ko: {
         title: '권인입니다.',
         subtitle: '필요한 것을 만들기 위해 배우고, 직접 구현합니다.',
@@ -39,9 +37,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
 
     return (
         <>
-            <h1 className="sr-only">
-                권인 포트폴리오
-            </h1>
+            <h1 className="sr-only">권인 포트폴리오</h1>
             <motion.div
                 className="relative flex min-h-0 flex-1 flex-col py-6 md:py-8"
                 initial={{ opacity: 0, y: 24 }}
@@ -65,9 +61,11 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                             const frameType = frameByType[project.displayType ?? 'web'];
 
                             return (
-                                <article
+                                <motion.article
                                     key={project.id}
-                                    className="project-carousel-item min-h-0 shrink-0"
+                                    className="project-carousel-item group flex min-h-0 shrink-0 cursor-pointer flex-col"
+                                    whileHover={{ y: -8 }}
+                                    transition={{ type: 'spring', stiffness: 400, damping: 28 }}
                                 >
                                     <div className="project-mockup-stage">
                                         <div className={`device-frame device-frame-${frameType}`}>
@@ -77,7 +75,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                                                 {project.image ? (
                                                     <Image
                                                         src={project.image}
-                                                        alt={`${project.title} preview placeholder`}
+                                                        alt={`${project.title[locale]} preview`}
                                                         width={520}
                                                         height={680}
                                                         className="h-full w-full object-cover"
@@ -87,7 +85,19 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                                             </div>
                                         </div>
                                     </div>
-                                </article>
+
+                                    <div className="mt-2 px-1 text-center">
+                                        <div className="flex items-center justify-center gap-0.5">
+                                            <span className="text-sm font-semibold text-foreground">
+                                                {project.title[locale]}
+                                            </span>
+                                            <ArrowUpRight className="h-3.5 w-3.5 translate-y-px text-foreground-secondary opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                                        </div>
+                                        <p className="mt-0.5 text-xs leading-relaxed text-foreground-secondary">
+                                            {project.description[locale]}
+                                        </p>
+                                    </div>
+                                </motion.article>
                             );
                         })}
                     </div>
