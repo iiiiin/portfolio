@@ -48,15 +48,15 @@ export const projects: Project[] = [
         },
     },
     {
-        id: 'review',
-        visible: false,
-        displayType: 'web',
-        title: 'RE:VIEW',
-        description: 'AI 면접 코칭 피드백 웹 서비스',
-        image: '/review.png',
-        tags: ['React', 'TypeScript', 'Zustand', 'TanStack Query', 'Tailwind CSS'],
+        id: 'cocos-forest',
+        visible: true,
+        displayType: 'app',
+        title: '코코의 숲',
+        description: '소비내역 기반 탄소배출량 추적 앱',
+        image: '/cocosforest_noframe_cut.png',
+        tags: ['React Native', 'Expo', 'Zustand', 'Axios', 'TanStack Query', 'OCR'],
         links: {
-            github: 'https://github.com/iiiiin/review.git',
+            github: 'https://github.com/iiiiin/cocos-forest.git',
         },
     },
     {
@@ -73,6 +73,18 @@ export const projects: Project[] = [
         },
     },
     {
+        id: 'review',
+        visible: false,
+        displayType: 'web',
+        title: 'RE:VIEW',
+        description: 'AI 면접 코칭 피드백 웹 서비스',
+        image: '/review.png',
+        tags: ['React', 'TypeScript', 'Zustand', 'TanStack Query', 'Tailwind CSS'],
+        links: {
+            github: 'https://github.com/iiiiin/review.git',
+        },
+    },
+    {
         id: 'lunch-hourglass',
         visible: false,
         displayType: 'chrome-ext',
@@ -83,18 +95,6 @@ export const projects: Project[] = [
         links: {
             store: 'https://chromewebstore.google.com/detail/cickockdphahndbedfjbjalmkoepijag?utm_source=item-share-cb',
             github: 'https://github.com/iiiiin/lunch-hourglass.git',
-        },
-    },
-    {
-        id: 'cocos-forest',
-        visible: true,
-        displayType: 'app',
-        title: '코코의 숲',
-        description: '소비내역 기반 탄소배출량 추적 앱',
-        image: '/cocosforest_noframe_cut.png',
-        tags: ['React Native', 'Expo', 'Zustand', 'Axios', 'TanStack Query', 'OCR'],
-        links: {
-            github: 'https://github.com/iiiiin/cocos-forest.git',
         },
     },
 ];
