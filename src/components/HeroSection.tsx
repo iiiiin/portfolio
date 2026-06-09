@@ -84,7 +84,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                                             key={isSelected ? `${project.id}-detail` : project.id}
                                             className={`group flex min-h-0 flex-col ${
                                                 isSelected
-                                                    ? 'w-1/3 shrink-0 pr-4'
+                                                    ? 'relative z-10 w-1/3 shrink-0 pr-4'
                                                     : 'project-carousel-item shrink-0 cursor-pointer'
                                             }`}
                                             initial={isSelected ? { opacity: 0, y: 20 } : { opacity: 0 }}
@@ -147,7 +147,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                             {selectedProject && (
                                 <motion.div
                                     key="detail-panel"
-                                    className="min-w-0 flex-1"
+                                    className="relative z-10 min-w-0 flex-1"
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: 20, transition: { duration: 0.15 } }}
