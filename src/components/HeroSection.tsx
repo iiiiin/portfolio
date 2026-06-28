@@ -72,7 +72,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                 <div className="project-carousel relative mt-5 min-h-0 flex-1 overflow-hidden md:mt-8">
                     <div className="flex h-full">
 
-                        <AnimatePresence mode="popLayout" initial={false}>
+                        <AnimatePresence mode="popLayout">
                             {visibleProjects
                                 .filter(p => !selectedProject || p.id === selectedProject.id)
                                 .map((project, index) => {
