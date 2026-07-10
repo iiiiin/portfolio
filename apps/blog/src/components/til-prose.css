@@ -1,0 +1,158 @@
+.til-prose {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--til-text);
+}
+
+.til-prose > :first-child {
+  margin-top: 0;
+}
+
+.til-prose p {
+  margin: 0 0 22px;
+}
+
+.til-prose h1,
+.til-prose h2,
+.til-prose h3,
+.til-prose h4 {
+  font-family: var(--font-libre-franklin), sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--til-text);
+}
+
+.til-prose h1 {
+  font-size: 23px;
+  margin: 40px 0 18px;
+}
+
+.til-prose h2 {
+  font-size: 20px;
+  margin: 36px 0 16px;
+}
+
+.til-prose h3,
+.til-prose h4 {
+  font-size: 17px;
+  margin: 28px 0 14px;
+}
+
+.til-prose ul,
+.til-prose ol {
+  margin: 0 0 22px;
+  padding-left: 22px;
+}
+
+.til-prose li {
+  margin-bottom: 8px;
+}
+
+.til-prose a {
+  color: var(--til-accent);
+}
+
+.til-prose strong {
+  font-weight: 600;
+  color: var(--til-text);
+}
+
+.til-prose blockquote {
+  margin: 0 0 26px;
+  padding: 14px 18px;
+  background: var(--til-note-bg);
+  border-radius: 6px;
+  border-left: none;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--til-text-soft);
+  font-style: normal;
+}
+
+.til-prose blockquote p {
+  margin: 0;
+}
+
+.til-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 28px;
+  border: 1px solid var(--til-border);
+  border-radius: 6px;
+}
+
+.til-prose table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: var(--font-libre-franklin), sans-serif;
+  font-size: 14px;
+}
+
+.til-prose th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--til-note-bg);
+  color: var(--til-text-soft);
+  font-weight: 600;
+  border-bottom: 1px solid var(--til-border);
+  white-space: nowrap;
+}
+
+.til-prose td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--til-border-soft);
+  color: var(--til-text);
+}
+
+.til-prose :not(pre) > code {
+  font-family: var(--font-nanum-gothic-coding), monospace;
+  font-size: 0.88em;
+  background: var(--til-note-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  color: var(--til-accent);
+}
+
+.til-prose figure[data-rehype-pretty-code-figure] {
+  margin: 0 0 28px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--til-border);
+}
+
+.til-prose pre[data-language] {
+  margin: 0;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.7;
+  font-family: var(--font-nanum-gothic-coding), monospace;
+}
+
+.til-prose pre[data-language]::before {
+  content: attr(data-language);
+  display: block;
+  padding: 9px 16px;
+  background: #232220;
+  color: #9c9890;
+  font-family: var(--font-nanum-gothic-coding), monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.til-prose pre[data-language] code {
+  display: block;
+  padding: 16px 18px;
+  font-family: var(--font-nanum-gothic-coding), monospace;
+}
+
+.til-mermaid {
+  margin: 0 0 30px;
+  padding: 20px;
+  background: var(--til-mermaid-bg);
+  border: 1px solid var(--til-border);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
