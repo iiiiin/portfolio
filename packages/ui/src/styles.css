@@ -1,0 +1,5 @@
+/**
+ * @inkwon/ui shared styles entry point.
+ * Consuming apps import this via `@import "@inkwon/ui/styles.css";` in their globals.css.
+ * Shared tokens/components will be migrated here from apps/blog.
+ */
