@@ -24,5 +24,5 @@ export default function Mermaid({ chart }: { chart: string }) {
     };
   }, [chart, id]);
 
-  return <div ref={ref} className="my-6 flex justify-center" />;
+  return <div ref={ref} className="til-mermaid" />;
 }

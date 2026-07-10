@@ -1,17 +1,24 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
 import { getPostBySlug } from "@/lib/notion";
 import { remarkMermaid } from "@/lib/remark-mermaid";
+import { rehypeWrapTables } from "@/lib/rehype-wrap-tables";
 import Mermaid from "@/components/Mermaid";
+import TilDetail from "@/components/TilDetail";
 
 export const revalidate = 60;
 
 const prettyCodeOptions = {
   theme: "github-dark",
 };
+
+function formatDate(iso: string) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
+}
 
 export default async function PostPage({
   params,
@@ -26,36 +33,21 @@ export default async function PostPage({
   }
 
   return (
-    <main className="max-w-2xl mx-auto px-4 py-16">
-      <Link href="/" className="text-sm text-neutral-500 hover:underline">
-        ← 목록으로
-      </Link>
-
-      <article className="mt-6">
-        <h1 className="text-2xl font-bold">{post.title}</h1>
-
-        <div className="flex items-center gap-3 mt-2 text-xs text-neutral-400">
-          {post.publishedAt && (
-            <time dateTime={post.publishedAt}>
-              {new Date(post.publishedAt).toLocaleDateString("ko-KR")}
-            </time>
-          )}
-          {post.tags.length > 0 && <span>{post.tags.join(", ")}</span>}
-        </div>
-
-        <div className="prose prose-neutral prose-pre:bg-transparent prose-pre:p-0 mt-8 max-w-none">
-          <MDXRemote
-            source={post.content}
-            options={{
-              mdxOptions: {
-                remarkPlugins: [remarkGfm, remarkMermaid],
-                rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
-              },
-            }}
-            components={{ Mermaid }}
-          />
-        </div>
-      </article>
-    </main>
+    <TilDetail
+      title={post.title}
+      dateStr={formatDate(post.publishedAt)}
+      tagsStr={post.tags.join(" · ")}
+    >
+      <MDXRemote
+        source={post.content}
+        options={{
+          mdxOptions: {
+            remarkPlugins: [remarkGfm, remarkMermaid],
+            rehypePlugins: [[rehypePrettyCode, prettyCodeOptions], rehypeWrapTables],
+          },
+        }}
+        components={{ Mermaid }}
+      />
+    </TilDetail>
   );
 }
