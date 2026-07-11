@@ -42,7 +42,7 @@ export default function RootLayout({
     <html
       lang="ko"
       data-theme="light"
-      className={`${geistSans.variable} ${geistMono.variable} ${libreFranklin.variable} ${ibmPlexSansKR.variable} ${nanumGothicCoding.variable} h-full antialiased`}
+      className={`${pretendard.variable} ${nanumGothicCoding.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
