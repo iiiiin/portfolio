@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { useDarkMode } from "@inkwon/ui";
+import { useDarkMode, Footer } from "@inkwon/ui";
 import { SANS, BODY } from "@/lib/til-theme";
 import TilHeader from "@/components/TilHeader";
-import TilFooter from "@/components/TilFooter";
 import "./til-prose.css";
 
 export default function TilDetail({
@@ -106,7 +105,7 @@ export default function TilDetail({
         </article>
       </div>
 
-      <TilFooter theme={theme} maxWidth={680} />
+      <Footer name="In Kwon" maxWidth={680} />
     </div>
   );
 }

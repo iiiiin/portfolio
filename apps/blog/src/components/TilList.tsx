@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { useMemo, useState, type CSSProperties } from "react";
-import { useDarkMode, type UiTheme } from "@inkwon/ui";
+import { useDarkMode, Footer, type UiTheme } from "@inkwon/ui";
 import { SANS, BODY } from "@/lib/til-theme";
 import TilHeader from "@/components/TilHeader";
-import TilFooter from "@/components/TilFooter";
 
 const PAGE_SIZE = 10;
 
@@ -178,7 +177,7 @@ export default function TilList({ posts }: { posts: TilListPost[] }) {
         )}
       </div>
 
-      <TilFooter theme={theme} maxWidth={660} />
+      <Footer name="In Kwon" maxWidth={660} />
     </div>
   );
 }

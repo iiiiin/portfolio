@@ -1,4 +1,5 @@
 export { Header } from "./Header";
+export { Footer } from "./Footer";
 export { DarkModeToggle } from "./DarkModeToggle";
 export { IconLinkButton } from "./IconLinkButton";
 export { RssIconButton } from "./RssIconButton";
