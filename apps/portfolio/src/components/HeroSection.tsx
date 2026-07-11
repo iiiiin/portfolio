@@ -6,6 +6,20 @@ const heroCopy = {
     subtitle: '기술 개발 경험을 정리한 포트폴리오입니다.',
 };
 
+// "**텍스트**" 구간만 굵게 표시 (하이라이트 문장 안에서 숫자 등 일부만 강조할 때 사용)
+function renderWithBold(text: string) {
+    return text.split(/(\*\*.+?\*\*)/g).map((part, i) => {
+        const match = part.match(/^\*\*(.+)\*\*$/);
+        return match ? (
+            <strong key={i} className="font-semibold text-foreground">
+                {match[1]}
+            </strong>
+        ) : (
+            part
+        );
+    });
+}
+
 export default function HeroSection() {
     const visibleProjects = projects.filter((p) => p.visible !== false);
 
@@ -50,7 +64,7 @@ export default function HeroSection() {
                                     {project.highlights.map((highlight, i) => (
                                         <li key={i} className="flex gap-2 text-sm leading-relaxed text-foreground-secondary">
                                             <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-foreground-muted" aria-hidden="true" />
-                                            {highlight}
+                                            {renderWithBold(highlight)}
                                         </li>
                                     ))}
                                 </ul>

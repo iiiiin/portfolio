@@ -79,7 +79,7 @@ export const projects: Project[] = [
         role: 'Chrome 확장 프로그램 기획·설계·단독 개발 및 스토어 배포',
         highlights: [
             '기획부터 Manifest V3 Service Worker 구조 설계·구현까지 단독 개발',
-            '한·영·일 i18n 지원 및 Chrome Web Store 배포 자동화',
+            '누적 다운로드 수 **300**회 이상',
         ],
         tags: ['Chrome Extension', 'Manifest V3', 'Alarms API', 'Notifications API', 'i18n'],
         links: {
