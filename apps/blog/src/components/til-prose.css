@@ -16,7 +16,7 @@
 .til-prose h2,
 .til-prose h3,
 .til-prose h4 {
-  font-family: var(--font-libre-franklin), sans-serif;
+  font-family: var(--font-pretendard), sans-serif;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--til-text);
@@ -83,7 +83,7 @@
 .til-prose table {
   border-collapse: collapse;
   width: 100%;
-  font-family: var(--font-libre-franklin), sans-serif;
+  font-family: var(--font-pretendard), sans-serif;
   font-size: 14px;
 }
 

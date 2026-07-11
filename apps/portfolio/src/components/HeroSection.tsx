@@ -1,8 +1,8 @@
 import { projects } from '@/data/profile';
 
 const heroCopy = {
-    title: '권인입니다.',
-    subtitle: '필요한 것을 만들기 위해 배우고, 직접 구현합니다.',
+    title: 'Portfolio',
+    subtitle: '기술 개발 경험을 정리한 포트폴리오입니다.',
 };
 
 export default function HeroSection() {

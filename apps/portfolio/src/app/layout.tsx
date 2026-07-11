@@ -1,17 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
-// 폰트 설정
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+// 폰트 설정 (Pretendard 자체 호스팅 — 구글 폰트 네트워크 의존성 제거)
+const pretendard = localFont({
+  src: "../../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
+  display: "swap",
+  weight: "45 920",
+  variable: "--font-pretendard",
 });
 const siteUrl = getSiteUrl();
 
@@ -46,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="ko" data-theme="light">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${pretendard.variable} antialiased`}
       >
         {children}
       </body>

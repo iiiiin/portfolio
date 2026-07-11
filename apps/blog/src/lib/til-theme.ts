@@ -1,5 +1,5 @@
-export const SANS = "var(--font-libre-franklin), Helvetica, Arial, sans-serif";
-export const BODY = "var(--font-ibm-plex-sans-kr), Helvetica, Arial, sans-serif";
+export const SANS = "var(--font-pretendard), Helvetica, Arial, sans-serif";
+export const BODY = "var(--font-pretendard), Helvetica, Arial, sans-serif";
 export const MONO = "var(--font-nanum-gothic-coding), monospace";
 
 export const LOGO_LIGHT = "/logo_portfolio.png";

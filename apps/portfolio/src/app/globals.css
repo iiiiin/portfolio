@@ -5,8 +5,7 @@
 /* Color/typography tokens (--background, --foreground, --border-color, etc.)
    come from @inkwon/ui/styles.css. Only font-family values stay app-local. */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-pretendard);
 }
 
 /* ============================================

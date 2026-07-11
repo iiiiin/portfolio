@@ -3,7 +3,7 @@
 @plugin "@tailwindcss/typography";
 
 @theme inline {
-  --font-sans: var(--font-libre-franklin);
+  --font-sans: var(--font-pretendard);
   --font-mono: var(--font-nanum-gothic-coding);
 }
 

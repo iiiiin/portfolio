@@ -1,33 +1,30 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Libre_Franklin, IBM_Plex_Sans_KR, Nanum_Gothic_Coding } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+// Pretendard, Nanum Gothic Coding 모두 자체 호스팅 — 구글 폰트 네트워크 의존성 제거
+const pretendard = localFont({
+  src: "../../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
+  display: "swap",
+  weight: "45 920",
+  variable: "--font-pretendard",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const libreFranklin = Libre_Franklin({
-  variable: "--font-libre-franklin",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const ibmPlexSansKR = IBM_Plex_Sans_KR({
-  variable: "--font-ibm-plex-sans-kr",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-});
-
-const nanumGothicCoding = Nanum_Gothic_Coding({
+const nanumGothicCoding = localFont({
+  src: [
+    {
+      path: "../../node_modules/@fontsource/nanum-gothic-coding/files/nanum-gothic-coding-latin-400-normal.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/@fontsource/nanum-gothic-coding/files/nanum-gothic-coding-latin-700-normal.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-nanum-gothic-coding",
-  subsets: ["latin"],
-  weight: ["400", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
