@@ -28,9 +28,6 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
   },
-  icons: {
-    icon: "/favicon-light.png",
-  },
   openGraph: {
     title: "권인 포트폴리오",
     description: "대학 졸업부터 현재까지의 커리어 여정을 시각적으로 표현한 개인 포트폴리오 웹사이트입니다.",
