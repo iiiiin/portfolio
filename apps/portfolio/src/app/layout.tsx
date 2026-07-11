@@ -15,7 +15,10 @@ const siteUrl = getSiteUrl();
 // SEO 메타데이터
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "권인 포트폴리오",
+  title: {
+    default: "InKwon — Portfolio",
+    template: "%s | inkwon",
+  },
   description: "개발자 권인의 개인 포트폴리오 웹사이트입니다.",
   keywords: ["포트폴리오", "프론트엔드", "개발자", "커리어", "로드맵", "권인"],
   authors: [{ name: "권인" }],

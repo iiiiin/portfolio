@@ -28,7 +28,10 @@ const nanumGothicCoding = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "일하며 남기는 개발 기록",
+  title: {
+    default: "InKwon — Blog",
+    template: "%s | inkwon",
+  },
   description:
     "검색하다 흘러들어온 누군가에게도 쓸모 있길 바라며 정리하는, 배운 것들의 기록.",
 };
