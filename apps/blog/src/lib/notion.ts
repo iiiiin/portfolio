@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 
@@ -60,7 +61,8 @@ export async function getPublishedPosts(): Promise<PostMeta[]> {
 }
 
 // slug로 특정 글 하나 찾기 (상세 페이지용)
-export async function getPostBySlug(slug: string) {
+// generateMetadata와 페이지 컴포넌트가 같은 요청 안에서 중복 호출하므로 cache()로 dedupe
+export const getPostBySlug = cache(async function getPostBySlug(slug: string) {
   const response = await getNotionClient().dataSources.query({
     data_source_id: getDataSourceId(),
     filter: {
@@ -87,4 +89,4 @@ export async function getPostBySlug(slug: string) {
     publishedAt: props.PublishedAt?.date?.start ?? "",
     content: mdString.parent, // 마크다운 본문 문자열
   };
-}
+});

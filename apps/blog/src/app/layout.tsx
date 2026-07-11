@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 // Pretendard, Nanum Gothic Coding 모두 자체 호스팅 — 구글 폰트 네트워크 의존성 제거
@@ -28,12 +29,16 @@ const nanumGothicCoding = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "InKwon — Blog",
     template: "%s | inkwon",
   },
   description:
     "검색하다 흘러들어온 누군가에게도 쓸모 있길 바라며 정리하는, 배운 것들의 기록.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
