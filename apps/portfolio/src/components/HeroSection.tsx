@@ -1,3 +1,4 @@
+import { ExternalLink } from 'lucide-react';
 import { projects } from '@/data/profile';
 
 const heroCopy = {
@@ -20,9 +21,81 @@ export default function HeroSection() {
             </header>
 
             <ul className="m-0 list-none p-0">
-                {visibleProjects.map((project) => (
-                    <li key={project.id} className="border-b border-border py-[26px]" />
-                ))}
+                {visibleProjects.map((project) => {
+                    const hasGithub = !!project.links?.github;
+                    const hasStore = !!project.links?.store;
+
+                    return (
+                        <li key={project.id} className="border-b border-border py-[26px]">
+                            <h2 className="text-[19px] font-semibold tracking-[-0.01em] text-foreground">
+                                {project.title}
+                            </h2>
+
+                            {project.period && (
+                                <p className="mt-1 text-xs text-foreground-muted">{project.period}</p>
+                            )}
+
+                            <p className="mt-3 text-[15.5px] leading-[1.6] text-foreground-secondary">
+                                {project.description}
+                            </p>
+
+                            {project.role && (
+                                <p className="mt-3 text-sm leading-relaxed text-foreground-secondary">
+                                    {project.role}
+                                </p>
+                            )}
+
+                            {project.highlights && (
+                                <ul className="mt-4 list-none space-y-2 p-0">
+                                    {project.highlights.map((highlight, i) => (
+                                        <li key={i} className="flex gap-2 text-sm leading-relaxed text-foreground-secondary">
+                                            <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-foreground-muted" aria-hidden="true" />
+                                            {highlight}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+
+                            <div className="mt-4 flex flex-wrap gap-1.5">
+                                {project.tags.map((tag) => (
+                                    <span
+                                        key={tag}
+                                        className="rounded-full bg-background-secondary px-2.5 py-1 text-xs text-foreground-secondary"
+                                    >
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+
+                            {(hasGithub || hasStore) && (
+                                <div className="mt-4 flex gap-5">
+                                    {hasGithub && (
+                                        <a
+                                            href={project.links!.github}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="group inline-flex items-center text-xs font-medium text-foreground-secondary transition-colors hover:text-foreground"
+                                        >
+                                            GitHub
+                                            <ExternalLink className="ml-1 h-3 w-3 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100" />
+                                        </a>
+                                    )}
+                                    {hasStore && (
+                                        <a
+                                            href={project.links!.store}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="group inline-flex items-center text-xs font-medium text-foreground-secondary transition-colors hover:text-foreground"
+                                        >
+                                            Store
+                                            <ExternalLink className="ml-1 h-3 w-3 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100" />
+                                        </a>
+                                    )}
+                                </div>
+                            )}
+                        </li>
+                    );
+                })}
             </ul>
         </div>
     );
