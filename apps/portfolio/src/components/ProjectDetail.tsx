@@ -2,15 +2,13 @@
 
 import { Github, ExternalLink, ChevronLeft } from 'lucide-react';
 import type { Project } from '@/data/profile';
-import type { Locale } from '@/types/locale';
 
 interface ProjectDetailProps {
     project: Project;
-    locale: Locale;
     onClose: () => void;
 }
 
-export default function ProjectDetail({ project, locale, onClose }: ProjectDetailProps) {
+export default function ProjectDetail({ project, onClose }: ProjectDetailProps) {
     const hasGithub = !!project.links?.github;
     const hasStore = !!project.links?.store;
 
@@ -25,7 +23,7 @@ export default function ProjectDetail({ project, locale, onClose }: ProjectDetai
                 >
                     <ChevronLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" />
                 </button>
-                <h2 className="text-2xl font-bold text-foreground">{project.title[locale]}</h2>
+                <h2 className="text-2xl font-bold text-foreground">{project.title}</h2>
             </div>
 
             {/* 기간 — 타이틀 바로 아래, 왼쪽 정렬 */}
@@ -34,16 +32,16 @@ export default function ProjectDetail({ project, locale, onClose }: ProjectDetai
             )}
 
             {/* 역할 */}
-            {project.role?.[locale] && (
-                <p className="mt-3 pl-[30px] text-base text-foreground-secondary">{project.role[locale]}</p>
+            {project.role && (
+                <p className="mt-3 pl-[30px] text-base text-foreground-secondary">{project.role}</p>
             )}
 
             <div className="my-5 h-px bg-border" />
 
             {/* 하이라이트 */}
-            {project.highlights?.[locale] && (
+            {project.highlights && (
                 <ul className="space-y-4 pl-[30px]">
-                    {project.highlights[locale].map((h, i) => (
+                    {project.highlights.map((h, i) => (
                         <li key={i} className="flex gap-2 text-sm leading-relaxed text-foreground-secondary">
                             <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-foreground-muted" aria-hidden="true" />
                             {h}

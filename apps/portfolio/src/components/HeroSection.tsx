@@ -5,22 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import { projects, type Project } from '@/data/profile';
-import type { Locale } from '@/types/locale';
 import ProjectDetail from '@/components/ProjectDetail';
 
-const copy: Record<Locale, { title: string; subtitle: string }> = {
-    ko: {
-        title: '권인입니다.',
-        subtitle: '필요한 것을 만들기 위해 배우고, 직접 구현합니다.',
-    },
-    en: {
-        title: "I'm In Kwon.",
-        subtitle: 'I learn and build directly to make what is needed.',
-    },
-    jp: {
-        title: 'Kwon Inです。',
-        subtitle: '必要なものをつくるために学び、直接実装します。',
-    },
+const heroCopy = {
+    title: '권인입니다.',
+    subtitle: '필요한 것을 만들기 위해 배우고, 직접 구현합니다.',
 };
 
 const frameByType = {
@@ -29,12 +18,7 @@ const frameByType = {
     web: 'laptop',
 } as const;
 
-interface HeroSectionProps {
-    locale: Locale;
-}
-
-export default function HeroSection({ locale }: HeroSectionProps) {
-    const heroCopy = copy[locale];
+export default function HeroSection() {
     const visibleProjects = projects.filter(p => p.visible !== false);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [exitingId, setExitingId] = useState<string | null>(null);
@@ -112,7 +96,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                                                             {project.image ? (
                                                                 <Image
                                                                     src={project.image}
-                                                                    alt={`${project.title[locale]} preview`}
+                                                                    alt={`${project.title} preview`}
                                                                     width={520}
                                                                     height={680}
                                                                     className="h-full w-full object-cover"
@@ -129,10 +113,10 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                                                     {!isSelected && (
                                                         <div className="text-center">
                                                             <p className="text-base font-semibold text-foreground">
-                                                                {project.title[locale]}
+                                                                {project.title}
                                                             </p>
                                                             <p className="mt-0.5 text-sm leading-relaxed text-foreground-secondary">
-                                                                {project.description[locale]}
+                                                                {project.description}
                                                             </p>
                                                         </div>
                                                     )}
@@ -155,7 +139,6 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                                 >
                                     <ProjectDetail
                                         project={selectedProject}
-                                        locale={locale}
                                         onClose={handleClose}
                                     />
                                 </motion.div>
