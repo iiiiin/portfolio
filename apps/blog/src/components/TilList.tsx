@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useMemo, useState, type CSSProperties } from "react";
-import { useTilDarkMode } from "@/hooks/useTilDarkMode";
-import { SANS, BODY, type TilTheme } from "@/lib/til-theme";
+import { useDarkMode, type UiTheme } from "@inkwon/ui";
+import { SANS, BODY } from "@/lib/til-theme";
 import TilHeader from "@/components/TilHeader";
 import TilFooter from "@/components/TilFooter";
 
@@ -17,7 +17,7 @@ export interface TilListPost {
   tags: string[];
 }
 
-function chipStyle(theme: TilTheme, active: boolean): CSSProperties {
+function chipStyle(theme: UiTheme, active: boolean): CSSProperties {
   return active
     ? {
         padding: "6px 14px",
@@ -42,7 +42,7 @@ function chipStyle(theme: TilTheme, active: boolean): CSSProperties {
 }
 
 export default function TilList({ posts }: { posts: TilListPost[] }) {
-  const { dark, theme, setDarkMode } = useTilDarkMode();
+  const { theme } = useDarkMode();
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [page, setPage] = useState(1);
 
@@ -78,7 +78,7 @@ export default function TilList({ posts }: { posts: TilListPost[] }) {
         transition: "background .15s,color .15s",
       }}
     >
-      <TilHeader theme={theme} dark={dark} setDarkMode={setDarkMode} />
+      <TilHeader />
 
       <div style={{ maxWidth: 660, margin: "0 auto", padding: "56px 24px 64px" }}>
         <header style={{ marginBottom: 44 }}>

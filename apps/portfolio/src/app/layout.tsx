@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     google: process.env.GOOGLE_SITE_VERIFICATION,
   },
   icons: {
-    icon: "/icon.png",
+    icon: "/favicon-light.png",
   },
   openGraph: {
     title: "권인 포트폴리오",

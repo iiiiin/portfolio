@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { useTilDarkMode } from "@/hooks/useTilDarkMode";
+import { useDarkMode } from "@inkwon/ui";
 import { SANS, BODY } from "@/lib/til-theme";
 import TilHeader from "@/components/TilHeader";
 import TilFooter from "@/components/TilFooter";
@@ -19,7 +19,7 @@ export default function TilDetail({
   tagsStr: string;
   children: ReactNode;
 }) {
-  const { dark, theme, setDarkMode } = useTilDarkMode();
+  const { theme } = useDarkMode();
 
   const proseVars = {
     "--til-bg": theme.bg,
@@ -44,7 +44,7 @@ export default function TilDetail({
         transition: "background .15s,color .15s",
       }}
     >
-      <TilHeader theme={theme} dark={dark} setDarkMode={setDarkMode} maxWidth={680} />
+      <TilHeader maxWidth={680} />
 
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "48px 24px 64px" }}>
         <article>

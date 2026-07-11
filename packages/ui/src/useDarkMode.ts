@@ -1,7 +1,7 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
-import { LIGHT_THEME, DARK_THEME, TIL_DARK_MODE_KEY } from "@/lib/til-theme";
+import { useEffect, useSyncExternalStore } from "react";
+import { LIGHT_THEME, DARK_THEME, UI_DARK_MODE_STORAGE_KEY } from "./theme";
 
 const getMediaQuery = () => window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -16,7 +16,7 @@ function subscribe(callback: () => void) {
 }
 
 function getSnapshot() {
-  const stored = localStorage.getItem(TIL_DARK_MODE_KEY);
+  const stored = localStorage.getItem(UI_DARK_MODE_STORAGE_KEY);
   if (stored !== null) return stored === "1";
   return getMediaQuery().matches;
 }
@@ -25,11 +25,15 @@ function getServerSnapshot() {
   return false;
 }
 
-export function useTilDarkMode() {
+export function useDarkMode() {
   const dark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
+  useEffect(() => {
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+  }, [dark]);
+
   const setDarkMode = (next: boolean) => {
-    localStorage.setItem(TIL_DARK_MODE_KEY, next ? "1" : "0");
+    localStorage.setItem(UI_DARK_MODE_STORAGE_KEY, next ? "1" : "0");
     window.dispatchEvent(new StorageEvent("storage"));
   };
 

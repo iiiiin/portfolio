@@ -1,5 +1,80 @@
 /**
- * @inkwon/ui shared styles entry point.
- * Consuming apps import this via `@import "@inkwon/ui/styles.css";` in their globals.css.
- * Shared tokens/components will be migrated here from apps/blog.
+ * @inkwon/ui shared design tokens.
+ * Consuming apps import this via `@import "@inkwon/ui/styles.css";` in their globals.css,
+ * before their own app-specific styles so local overrides still win the cascade.
  */
+
+/* Tailwind's content scanner doesn't reach outside the importing app by default,
+   so utility classes used in this package's own components (Header, DarkModeToggle, etc.)
+   would otherwise be stripped from consuming apps' compiled CSS. */
+@source "./**/*.{ts,tsx}";
+
+:root {
+  --background: #faf9f7;
+  --background-secondary: #f1efec;
+  --background-card: #ffffff;
+
+  --foreground: #232220;
+  --foreground-secondary: #4c4944;
+  --foreground-muted: #9a968f;
+
+  --accent-primary: #5f7a52;
+
+  --border-color: #e6e3de;
+  --border-color-strong: #d3cfc8;
+  --border-color-soft: #eeece8;
+}
+
+[data-theme="dark"] {
+  --background: #1c1b19;
+  --background-secondary: #262420;
+  --background-card: #232120;
+
+  --foreground: #ece9e4;
+  --foreground-secondary: #c7c3bc;
+  --foreground-muted: #8b877f;
+
+  --accent-primary: #9cc084;
+
+  --border-color: #332f2a;
+  --border-color-strong: #433e37;
+  --border-color-soft: #2c2924;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-card: var(--background-card);
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-accent-primary: var(--accent-primary);
+  --color-border: var(--border-color);
+}
+
+/* ============================================
+   Dark mode toggle (single button, sun/moon swap)
+   ============================================ */
+.theme-toggle .theme-icon-sun {
+  display: none;
+}
+
+.theme-toggle .theme-icon-moon {
+  display: block;
+}
+
+html[data-theme="light"] .theme-toggle .theme-icon-sun {
+  display: block;
+}
+
+html[data-theme="light"] .theme-toggle .theme-icon-moon {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .theme-icon-sun {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .theme-icon-moon {
+  display: block;
+}

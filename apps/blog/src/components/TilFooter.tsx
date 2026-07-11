@@ -1,10 +1,11 @@
-import { SANS, type TilTheme } from "@/lib/til-theme";
+import type { UiTheme } from "@inkwon/ui";
+import { SANS } from "@/lib/til-theme";
 
 export default function TilFooter({
   theme,
   maxWidth = 660,
 }: {
-  theme: TilTheme;
+  theme: UiTheme;
   maxWidth?: number;
 }) {
   return (
