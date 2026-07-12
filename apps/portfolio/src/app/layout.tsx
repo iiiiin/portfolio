@@ -40,14 +40,19 @@ export const metadata: Metadata = {
   },
 };
 
-const personJsonLd = {
+const profilePageJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: profile.name,
-  url: siteUrl,
-  image: `${siteUrl}${profile.avatarUrl}`,
-  jobTitle: "Frontend Developer",
-  sameAs: [profile.github, profile.linkedin, profile.blog].filter(Boolean),
+  "@type": "ProfilePage",
+  dateCreated: "2026-01-24",
+  dateModified: "2026-07-12",
+  mainEntity: {
+    "@type": "Person",
+    name: profile.name,
+    url: siteUrl,
+    image: `${siteUrl}${profile.avatarUrl}`,
+    jobTitle: "Frontend Developer",
+    sameAs: [profile.github, profile.linkedin, profile.blog].filter(Boolean),
+  },
 };
 
 export default function RootLayout({
@@ -62,7 +67,7 @@ export default function RootLayout({
       >
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageJsonLd) }}
         />
         {children}
       </body>
