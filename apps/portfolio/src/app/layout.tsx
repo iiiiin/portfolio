@@ -43,8 +43,8 @@ export const metadata: Metadata = {
 const profilePageJsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  dateCreated: "2026-01-24",
-  dateModified: "2026-07-12",
+  dateCreated: "2026-01-24T00:00:00+09:00",
+  dateModified: "2026-07-12T00:00:00+09:00",
   mainEntity: {
     "@type": "Person",
     name: profile.name,
