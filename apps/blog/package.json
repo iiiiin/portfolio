@@ -11,6 +11,7 @@
   "dependencies": {
     "@fontsource/nanum-gothic-coding": "^5.2.8",
     "@inkwon/ui": "workspace:*",
+    "@next/third-parties": "^16.2.10",
     "@notionhq/client": "^5.22.0",
     "mermaid": "^11.16.0",
     "next": "16.2.10",
