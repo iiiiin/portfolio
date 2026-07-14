@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, type CSSProperties } from "react";
+import { sendGAEvent } from "@next/third-parties/google";
 import { useDarkMode, Footer, type UiTheme } from "@inkwon/ui";
 import { SANS, BODY } from "@/lib/til-theme";
 import TilHeader from "@/components/TilHeader";
@@ -64,6 +65,7 @@ export default function TilList({ posts }: { posts: TilListPost[] }) {
   const setTag = (name: string) => {
     setActiveTag((cur) => (cur === name ? null : name));
     setPage(1);
+    sendGAEvent("event", "tag_filter_click", { tag: name });
   };
 
   return (
@@ -108,7 +110,14 @@ export default function TilList({ posts }: { posts: TilListPost[] }) {
             borderBottom: `1px solid ${theme.border}`,
           }}
         >
-          <button style={chipStyle(theme, !activeTag)} onClick={() => { setActiveTag(null); setPage(1); }}>
+          <button
+            style={chipStyle(theme, !activeTag)}
+            onClick={() => {
+              setActiveTag(null);
+              setPage(1);
+              sendGAEvent("event", "tag_filter_click", { tag: "전체" });
+            }}
+          >
             전체
           </button>
           {tags.map((tag) => (
@@ -123,7 +132,11 @@ export default function TilList({ posts }: { posts: TilListPost[] }) {
             <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
               {pagePosts.map((post) => (
                 <li key={post.slug} style={{ borderBottom: `1px solid ${theme.border}` }}>
-                  <Link href={`/${post.slug}`} style={{ textDecoration: "none", display: "block", padding: "26px 0" }}>
+                  <Link
+                    href={`/${post.slug}`}
+                    style={{ textDecoration: "none", display: "block", padding: "26px 0" }}
+                    onClick={() => sendGAEvent("event", "post_card_click", { slug: post.slug, title: post.title })}
+                  >
                     <h2 style={{ fontSize: 19, fontWeight: 600, margin: "0 0 7px", letterSpacing: "-0.01em", color: theme.text }}>
                       {post.title}
                     </h2>
