@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { getSiteUrl } from "@/lib/site-url";
 import { profile } from "@/data/profile";
 import "./globals.css";
@@ -71,6 +72,9 @@ export default function RootLayout({
         />
         {children}
       </body>
+      {process.env.NEXT_PUBLIC_GA_ID && (
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+      )}
     </html>
   );
 }
