@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { BookOpen, Github, Linkedin, Mail } from 'lucide-react';
 import Image from 'next/image';
+import { sendGAEvent } from '@next/third-parties/google';
 import { Header as SharedHeader, DarkModeToggle, useDarkMode } from '@inkwon/ui';
 import { profile } from '@/data/profile';
 
@@ -12,17 +13,17 @@ const FAVICON_DARK = '/favicon-dark.png';
 export default function Header() {
     const { dark } = useDarkMode();
     const socialLinks = [
-        { href: `mailto:${profile.email}`, label: 'Email', icon: Mail },
+        { id: 'email', href: `mailto:${profile.email}`, label: 'Email', icon: Mail },
         profile.github
-            ? { href: profile.github, label: 'GitHub', icon: Github }
+            ? { id: 'github', href: profile.github, label: 'GitHub', icon: Github }
             : null,
         profile.linkedin
-            ? { href: profile.linkedin, label: 'LinkedIn', icon: Linkedin }
+            ? { id: 'linkedin', href: profile.linkedin, label: 'LinkedIn', icon: Linkedin }
             : null,
         profile.blog
-            ? { href: profile.blog, label: '블로그', icon: BookOpen }
+            ? { id: 'blog', href: profile.blog, label: '블로그', icon: BookOpen }
             : null,
-    ].filter((item): item is { href: string; label: string; icon: typeof Mail } => item !== null);
+    ].filter((item): item is { id: string; href: string; label: string; icon: typeof Mail } => item !== null);
 
     return (
         <motion.div
@@ -61,6 +62,7 @@ export default function Header() {
                                         rel={item.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
                                         className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground-secondary transition-colors hover:bg-background-secondary hover:text-foreground"
                                         aria-label={item.label}
+                                        onClick={() => sendGAEvent('event', 'social_link_click', { link_type: item.id })}
                                     >
                                         <Icon className="h-4 w-4" />
                                     </a>

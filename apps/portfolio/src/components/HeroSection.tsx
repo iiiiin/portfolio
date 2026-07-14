@@ -1,4 +1,7 @@
+'use client';
+
 import { ExternalLink } from 'lucide-react';
+import { sendGAEvent } from '@next/third-parties/google';
 import { projects } from '@/data/profile';
 
 const heroCopy = {
@@ -89,6 +92,7 @@ export default function HeroSection() {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="group inline-flex items-center text-xs font-medium text-foreground-secondary transition-colors hover:text-foreground"
+                                            onClick={() => sendGAEvent('event', 'project_link_click', { project_id: project.id, link_type: 'github' })}
                                         >
                                             GitHub
                                             <ExternalLink className="ml-1 h-3 w-3 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100" />
@@ -100,6 +104,7 @@ export default function HeroSection() {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="group inline-flex items-center text-xs font-medium text-foreground-secondary transition-colors hover:text-foreground"
+                                            onClick={() => sendGAEvent('event', 'project_link_click', { project_id: project.id, link_type: 'store' })}
                                         >
                                             Store
                                             <ExternalLink className="ml-1 h-3 w-3 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100" />
