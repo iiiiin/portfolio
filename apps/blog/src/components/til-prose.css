@@ -44,6 +44,18 @@
   padding-left: 22px;
 }
 
+.til-prose ul {
+  list-style-type: disc;
+}
+
+.til-prose ol {
+  list-style-type: decimal;
+}
+
+.til-prose li::marker {
+  color: var(--til-muted);
+}
+
 .til-prose li {
   margin-bottom: 8px;
 }
