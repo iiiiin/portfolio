@@ -21,6 +21,7 @@ export interface Project {
     links?: {
         store?: string;
         github?: string;
+        privacyPolicy?: boolean;
     };
 }
 
@@ -85,6 +86,7 @@ export const projects: Project[] = [
         links: {
             store: 'https://chromewebstore.google.com/detail/dnojahjhfhgblnfggidnhjnjmfeeenmi?utm_source=item-share-cb',
             github: 'https://github.com/iiiiin/turtleneck-reminder.git',
+            privacyPolicy: true,
         },
     },
     {

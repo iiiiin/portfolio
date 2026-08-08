@@ -41,6 +41,7 @@ export default function HeroSection() {
                 {visibleProjects.map((project) => {
                     const hasGithub = !!project.links?.github;
                     const hasStore = !!project.links?.store;
+                    const hasPrivacyPolicy = !!project.links?.privacyPolicy;
 
                     return (
                         <li key={project.id} className="border-b border-border py-[26px]">
@@ -84,7 +85,7 @@ export default function HeroSection() {
                                 ))}
                             </div>
 
-                            {(hasGithub || hasStore) && (
+                            {(hasGithub || hasStore || hasPrivacyPolicy) && (
                                 <div className="mt-4 flex gap-5">
                                     {hasGithub && (
                                         <a
@@ -107,6 +108,16 @@ export default function HeroSection() {
                                             onClick={() => sendGAEvent('event', 'project_link_click', { project_id: project.id, link_type: 'store' })}
                                         >
                                             Store
+                                            <ExternalLink className="ml-1 h-3 w-3 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100" />
+                                        </a>
+                                    )}
+                                    {hasPrivacyPolicy && (
+                                        <a
+                                            href="#"
+                                            className="group inline-flex items-center text-xs font-medium text-foreground-secondary transition-colors hover:text-foreground"
+                                            onClick={(event) => event.preventDefault()}
+                                        >
+                                            Privacy Policy
                                             <ExternalLink className="ml-1 h-3 w-3 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100" />
                                         </a>
                                     )}
